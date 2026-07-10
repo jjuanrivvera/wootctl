@@ -1,6 +1,7 @@
 # docs.yml — regenerate the command reference and publish the MkDocs site (GOAL.md §6).
 name: Docs
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths: ['docs/**', 'commands/**', 'mkdocs.yml']
