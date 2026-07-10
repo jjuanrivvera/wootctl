@@ -120,6 +120,34 @@ every cobra alias path and the raw `api` hatch for write methods — with a PreT
 hook that survives quoting tricks and path-prefixed binaries. `codex` and `opencode`
 targets are included.
 
+## Backup, restore & sync (beyond the API)
+
+Past the raw endpoints, cwctl treats your account **config** as something you can version and
+move between instances — labels, canned responses, custom attributes, custom filters,
+automation rules, teams, webhooks, and agent bots (never conversations/contacts/messages,
+which are live data).
+
+```bash
+# dump config to a git-friendly directory (one YAML file per kind, writable fields only)
+cwctl backup --dir ./chatwoot-config
+git -C ./chatwoot-config add -A && git -C ./chatwoot-config commit -m "chatwoot config"
+
+# reconcile a backup back into the account: create missing, update changed, skip unchanged
+cwctl restore --dir ./chatwoot-config --dry-run     # always preview first
+cwctl restore --dir ./chatwoot-config
+cwctl restore --dir ./chatwoot-config --only labels --prune   # also delete drift
+
+# the multi-instance payoff the official CLI can't do: promote config between instances
+cwctl sync --to production --dry-run
+cwctl sync --to production --only canned-responses,labels
+cwctl --profile staging sync --to production --prune
+```
+
+Matching is by natural key (title, short_code, name, url, attribute_key); "unchanged" compares
+only writable fields, so `id`/timestamps never cause phantom updates. A key that appears twice
+in an account is skipped and never pruned — cwctl won't act on an ambiguous match. `restore`
+and `sync` are classified destructive, so `cwctl agent guard` hard-blocks them for AI agents.
+
 ## vs the official `chatwoot` CLI
 
 The official [Chatwoot CLI](https://developers.chatwoot.com/cli) is good at what it
@@ -133,6 +161,8 @@ covers, and if you only drive one instance's conversations it may be all you nee
 - **Headless hosts**: encrypted-file keyring fallback when no OS keyring exists (VPS,
   containers).
 - **Agent surface**: MCP server with safety annotations + generated guardrails.
+- **Beyond the API**: git-friendly `backup`/`restore` of account config and cross-instance
+  `sync` — promote labels/canned-responses/automation between instances.
 - **Scripting**: json/yaml/csv/id output, `--jq`, `--dry-run` curls, `--all` pagination.
 
 Where the official CLI is genuinely better: it is first-party (tracks new endpoints the

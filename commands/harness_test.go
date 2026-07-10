@@ -73,12 +73,19 @@ func (e *env) run(args ...string) (string, string, error) {
 	e.t.Helper()
 	d := newDeps()
 	d.store = func() auth.Store { return e.store }
+	return runWithDeps(e.t, d, args...)
+}
+
+// runWithDeps builds a fresh tree from d and runs it with captured output — used by tests
+// that need custom deps (e.g. a two-profile sync).
+func runWithDeps(t *testing.T, d *deps, args ...string) (string, string, error) {
+	t.Helper()
 	root := newRootCmd(d)
 	root.SetArgs(args)
 	var out, errB bytes.Buffer
 	root.SetOut(&out)
 	root.SetErr(&errB)
-	err := root.ExecuteContext(e.t.Context())
+	err := root.ExecuteContext(t.Context())
 	return out.String(), errB.String(), err
 }
 

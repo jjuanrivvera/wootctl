@@ -152,32 +152,51 @@ func registerGlobalFlags(root *cobra.Command, gf *globalFlags) {
 	pf.StringSliceVar(&gf.filter, "filter", nil, "client-side field=value filters (list commands)")
 }
 
-// getAPIClient builds an authenticated client honoring flag > env > config precedence.
-// requireAuth=false lets public/client and dry-run-ish commands proceed tokenless.
+// getAPIClient builds an authenticated client for the ACTIVE profile, honoring
+// flag > env > config precedence. requireAuth=false lets public/client and dry-run-ish
+// commands proceed tokenless.
 func (d *deps) getAPIClient(requireAuth bool) (*api.Client, *config.Config, error) {
 	cfg, err := d.loadConfig()
 	if err != nil {
 		return nil, nil, err
 	}
 	profileName := cfg.ResolveProfileName(d.gf.profile)
+	c, err := d.clientForProfile(cfg, profileName, requireAuth, true)
+	return c, cfg, err
+}
+
+// clientForProfile builds a client for an explicitly named profile. allowGlobals wires the
+// global --base-url/--account-id flags and the CWCTL_* env overrides; it MUST be false for a
+// secondary profile (e.g. `sync --to <profile>`), whose base/account/token come only from its
+// own stored config + keyring so the active profile's flags don't leak across instances.
+func (d *deps) clientForProfile(cfg *config.Config, profileName string, requireAuth, allowGlobals bool) (*api.Client, error) {
 	prof, _ := cfg.Profile(profileName)
 
-	baseURL := config.FirstNonEmpty(d.gf.baseURL, os.Getenv("CWCTL_BASE_URL"), prof.BaseURL)
+	baseURL := prof.BaseURL
+	if allowGlobals {
+		baseURL = config.FirstNonEmpty(d.gf.baseURL, os.Getenv("CWCTL_BASE_URL"), prof.BaseURL)
+	}
 	if baseURL == "" {
-		return nil, cfg, fmt.Errorf("no base URL for profile %q — run `cwctl auth login` (or `cwctl init`), or pass --base-url", profileName)
+		return nil, fmt.Errorf("no base URL for profile %q — run `cwctl --profile %s auth login`", profileName, profileName)
 	}
 
-	token := os.Getenv("CWCTL_API_KEY")
+	var token string
+	if allowGlobals {
+		token = os.Getenv("CWCTL_API_KEY")
+	}
 	if token == "" {
 		if t, err := d.store().Get(profileName); err == nil {
 			token = t
 		}
 	}
 	if requireAuth && token == "" {
-		return nil, cfg, fmt.Errorf("no API token for profile %q — run `cwctl auth login` or set CWCTL_API_KEY", profileName)
+		return nil, fmt.Errorf("no API token for profile %q — run `cwctl --profile %s auth login`", profileName, profileName)
 	}
 
-	platformToken := os.Getenv("CWCTL_PLATFORM_TOKEN")
+	var platformToken string
+	if allowGlobals {
+		platformToken = os.Getenv("CWCTL_PLATFORM_TOKEN")
+	}
 	if platformToken == "" {
 		if t, err := d.store().Get(auth.PlatformKey(profileName)); err == nil {
 			platformToken = t
@@ -197,11 +216,14 @@ func (d *deps) getAPIClient(requireAuth bool) (*api.Client, *config.Config, erro
 		api.WithPlatformToken(platformToken),
 		api.WithRateLimit(rps),
 	)
-	c.AccountID = config.FirstNonEmpty(d.gf.accountID, os.Getenv("CWCTL_ACCOUNT_ID"), prof.AccountID)
+	c.AccountID = prof.AccountID
+	if allowGlobals {
+		c.AccountID = config.FirstNonEmpty(d.gf.accountID, os.Getenv("CWCTL_ACCOUNT_ID"), prof.AccountID)
+	}
 	c.ShowToken = d.gf.showToken
 	c.Verbose = d.gf.verbose
 	c.VerboseOut = os.Stderr
-	return c, cfg, nil
+	return c, nil
 }
 
 func (d *deps) stdout() *os.File {

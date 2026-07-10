@@ -32,5 +32,6 @@ nav:
   - Guides:
       - Authentication & profiles: authentication.md
       - Output & filtering: output.md
+      - Backup, restore & sync: backup-sync.md
       - AI agents: agents.md
   - Command reference: commands/cwctl.md

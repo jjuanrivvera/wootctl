@@ -50,6 +50,7 @@ Examples:
 * [cwctl audit-logs](cwctl_audit-logs.md)	 - Read the account audit log (Enterprise)
 * [cwctl auth](cwctl_auth.md)	 - Manage Chatwoot tokens and verify authentication
 * [cwctl automation-rules](cwctl_automation-rules.md)	 - Manage automation rules
+* [cwctl backup](cwctl_backup.md)	 - Back up account config (labels, canned responses, automation, teams, …) to a git-friendly dir
 * [cwctl canned-responses](cwctl_canned-responses.md)	 - Manage canned responses (saved reply snippets)
 * [cwctl client](cwctl_client.md)	 - Public client API (inbox/contact/conversation flows) — no token required
 * [cwctl completion](cwctl_completion.md)	 - Generate shell completion scripts
@@ -70,6 +71,8 @@ Examples:
 * [cwctl portals](cwctl_portals.md)	 - Manage help-center portals, articles, and categories
 * [cwctl profile](cwctl_profile.md)	 - Read and update your own user profile
 * [cwctl reports](cwctl_reports.md)	 - Account analytics (v2 reports, summaries, reporting events)
+* [cwctl restore](cwctl_restore.md)	 - Reconcile a backup dir into the account (create/update/skip; --prune removes drift)
+* [cwctl sync](cwctl_sync.md)	 - Copy account config from one instance to another (the multi-instance payoff)
 * [cwctl teams](cwctl_teams.md)	 - Manage teams and their members
 * [cwctl version](cwctl_version.md)	 - Print version, commit, and build date
 * [cwctl webhooks](cwctl_webhooks.md)	 - Manage account webhook subscriptions

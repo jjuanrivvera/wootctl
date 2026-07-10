@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-07-10
+
+### Added
+
+- **Beyond-the-API layer** (config-as-code + multi-instance):
+  - `cwctl backup --dir <dir>` dumps account config (labels, canned-responses,
+    custom-attributes, custom-filters, automation-rules, teams, webhooks, agent-bots) to
+    a git-friendly directory of YAML files, keeping only writable fields.
+  - `cwctl restore --dir <dir>` reconciles a backup into the account (create/update/skip;
+    `--prune` removes drift), matching by natural key with duplicate-detect-and-skip.
+  - `cwctl sync --to <profile>` promotes config between instances — the multi-instance
+    payoff the single-instance official CLI can't offer.
+  - `restore`/`sync` are classified destructive (they can `--prune`), so `agent guard`
+    hard-blocks them; `backup` stays allowed. All three preview with `--dry-run`.
+
 ## [0.1.2] - 2026-07-10
 
 ### Fixed
@@ -58,7 +73,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   opencode with a hardened PreToolUse hook (alias-path enumeration, de-obfuscation,
   METHOD-gated raw api, strict no-jq fallback).
 
-[Unreleased]: https://github.com/jjuanrivvera/cwctl/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/jjuanrivvera/cwctl/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/jjuanrivvera/cwctl/compare/v0.1.2...v0.2.0
 [0.1.2]: https://github.com/jjuanrivvera/cwctl/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/jjuanrivvera/cwctl/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/jjuanrivvera/cwctl/releases/tag/v0.1.0

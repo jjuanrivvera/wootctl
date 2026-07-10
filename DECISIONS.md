@@ -70,3 +70,13 @@ never silently re-decides.
     FlexTime/FlexBool) guard those typed paths.
 20. **--limit is client-side** → Chatwoot fixes page size server-side (no per_page param), so
     --limit truncates after fetch; --page selects the server page. Documented in the flag help.
+21. **Beyond-the-API (§3c) is intentionally OUTSIDE the manifest** → `backup`/`restore`/`sync`
+    are value-adds, not API endpoints, so they don't appear in `api-manifest.json` and don't
+    count toward completeness. spec-check only enforces manifest ⊆ CLI, so extra commands are
+    fine. Portable kinds = account CONFIG only (labels, canned-responses, custom-attributes,
+    custom-filters, automation-rules, teams, webhooks, agent-bots) — never conversations/
+    contacts/messages (live data). Chatwoot exposes no stable cross-instance handle, so matching
+    is by natural key (title/short_code/name/url/attribute_key) with mandatory duplicate-detect-
+    and-skip; "unchanged" compares only the writable-field whitelist (auto-drops id/timestamps).
+    `restore`/`sync` are annotated destructive (they can `--prune`), so the agent guard
+    hard-blocks them. Inboxes/portals excluded from portability (channel credentials / no delete).
