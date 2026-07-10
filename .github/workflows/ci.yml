@@ -6,7 +6,8 @@
 # prebuilt action (an old scanner can't compile under a newer Go toolchain).
 name: CI
 on:
-  push: { branches: [main, develop] }
+  push:
+    branches: [main, develop]
   pull_request:
   workflow_dispatch:
 
