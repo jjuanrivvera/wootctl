@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-07-10
+
+### Security
+
+- Upgrade `modelcontextprotocol/go-sdk` to v1.6.1, past GO-2026-4773 (cross-site tool
+  execution in the SDK's HTTP transport, reachable via `cwctl mcp stream`) and
+  GO-2026-5771 (DNS-rebinding protection default). stdio MCP (`cwctl mcp start`) was
+  unaffected.
+
+### Fixed
+
+- The pre-commit hook no longer aborts silently on commits that stage only
+  `go.mod`/`go.sum`.
+
 ## [0.1.0] - 2026-07-10
 
 ### Added
@@ -32,5 +46,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   opencode with a hardened PreToolUse hook (alias-path enumeration, de-obfuscation,
   METHOD-gated raw api, strict no-jq fallback).
 
-[Unreleased]: https://github.com/jjuanrivvera/cwctl/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/jjuanrivvera/cwctl/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/jjuanrivvera/cwctl/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/jjuanrivvera/cwctl/releases/tag/v0.1.0
