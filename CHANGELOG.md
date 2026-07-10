@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-07-10
+
+### Fixed
+
+- `update` no longer requires create-only fields: a partial PATCH (e.g. `labels update
+  <id> --description X`) no longer fails demanding `--title`. Resources with explicit
+  `UpdateFields` keep their own required flags. Found during live testing.
+- Decode Chatwoot's double-nested envelopes: single records wrapped as
+  `{"payload":{"<resource>":{…}}}` (webhook create) and lists as
+  `{"payload":{"webhooks":[…]}}` are now unwrapped, so `webhooks create`/`list` render
+  the record(s) instead of `null`/an error. Found during live testing.
+
 ## [0.1.1] - 2026-07-10
 
 ### Security
@@ -46,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   opencode with a hardened PreToolUse hook (alias-path enumeration, de-obfuscation,
   METHOD-gated raw api, strict no-jq fallback).
 
-[Unreleased]: https://github.com/jjuanrivvera/cwctl/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/jjuanrivvera/cwctl/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/jjuanrivvera/cwctl/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/jjuanrivvera/cwctl/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/jjuanrivvera/cwctl/releases/tag/v0.1.0
