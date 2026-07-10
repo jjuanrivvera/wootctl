@@ -26,7 +26,8 @@ done
 have "--dry-run prints equivalent curl"  "rg -lq 'dry-run' . && rg -lq 'curl' internal/api"
 have "Ctrl-C: signal.NotifyContext"      "rg -lq 'signal.NotifyContext' cmd"
 have "no stray context.Background()"     "! rg -lq 'context.Background()' commands internal/api"
-have "secrets in OS keyring"             "rg -q 'zalando/go-keyring' go.mod"
+have "OpenAPI contract test present"   "rg -lq ValidateRequest commands"
+  have "secrets in OS keyring"             "rg -q 'zalando/go-keyring' go.mod"
 have "idempotent-only retry"             "rg -lq 'idempotent|MethodGet|MethodPut|MethodDelete' internal/api"
 
 # Meta commands (atomic — one per command)

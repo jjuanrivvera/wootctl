@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **OpenAPI contract testing** (`commands/contract_test.go`): every request the CLI builds
+  for the application API is validated against Chatwoot's own OpenAPI spec (method, path, and
+  request-body schema), vendored at `internal/api/testdata/application_swagger.json`. A
+  self-check test proves the harness can fail (bad body + unknown path are flagged), so the
+  gate can't silently green-light drift. This is the wire-level check the official CLI has;
+  `spec-check` proves a command exists, this proves the bytes it sends match the schema.
+
 ## [0.2.0] - 2026-07-10
 
 ### Added
