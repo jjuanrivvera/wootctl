@@ -63,3 +63,10 @@ never silently re-decides.
     Linux/VPS), fall back to an AES-256-GCM encrypted file under the config dir keyed by
     `CWCTL_KEYRING_PASSWORD` (scrypt-derived), mirroring the fleet's file-keyring pattern;
     `CWCTL_API_KEY` env always wins for CI.
+19. **Records decode as raw JSON** (`api.Rec = json.RawMessage`), not typed structs → Chatwoot
+    adds response fields every release; raw decode means `-o json`/`-o yaml` never silently drop
+    fields, and the renderer's JSON normalization drives tables identically. Typed structs exist
+    only where cwctl itself consumes fields (whoami, list meta). Flexible types (ID/FlexInt/
+    FlexTime/FlexBool) guard those typed paths.
+20. **--limit is client-side** → Chatwoot fixes page size server-side (no per_page param), so
+    --limit truncates after fetch; --page selects the server page. Documented in the flag help.
