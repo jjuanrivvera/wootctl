@@ -246,3 +246,17 @@ func TestGeneric_AllPagesRespectsCount(t *testing.T) {
 	assert.Equal(t, "1\n2\n", out)
 	assert.Equal(t, 2, calls)
 }
+
+func TestGeneric_UpdateInheritedFieldsDropRequired(t *testing.T) {
+	h, log := recordingHandler(t, func(r *http.Request) (int, string) { return 200, `{}` })
+	e := newEnv(t, h)
+	// labels create requires --title; update inherits the fields but must NOT require it.
+	_, _, err := e.run("labels", "update", "1", "--description", "partial patch")
+	require.NoError(t, err)
+	assert.Contains(t, (*log)[0].Body, `"description":"partial patch"`)
+
+	// Explicit UpdateFields keep their spec-mandated required flags (agents update needs --role).
+	_, _, err = e.run("agents", "update", "1", "--availability", "busy")
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "--role")
+}

@@ -288,7 +288,13 @@ func buildUpdateCmd[T any](d *deps, spec resourceSpec[T]) *cobra.Command {
 	}
 	fields := spec.UpdateFields
 	if fields == nil {
-		fields = spec.CreateFields
+		// Updates are partial edits: when reusing the create fields, required-ness must
+		// not carry over (a PATCH without --title is valid; the create POST is not).
+		fields = make([]field, len(spec.CreateFields))
+		for i, f := range spec.CreateFields {
+			f.Required = false
+			fields[i] = f
+		}
 	}
 	cmd := &cobra.Command{
 		Use:     "update <" + spec.idArg() + ">",
