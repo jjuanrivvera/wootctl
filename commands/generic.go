@@ -276,7 +276,7 @@ func buildCreateCmd[T any](d *deps, spec resourceSpec[T]) *cobra.Command {
 		if c.DryRun || d.gf.quiet {
 			return nil
 		}
-		return d.render(cmd, out, spec.Columns)
+		return d.render(cmd, api.NormalizeRecord(out), spec.Columns)
 	}
 	return annotate(cmd, kindWrite)
 }
@@ -319,7 +319,7 @@ func buildUpdateCmd[T any](d *deps, spec resourceSpec[T]) *cobra.Command {
 		if c.DryRun || d.gf.quiet {
 			return nil
 		}
-		return d.render(cmd, out, spec.Columns)
+		return d.render(cmd, api.NormalizeRecord(out), spec.Columns)
 	}
 	return annotate(cmd, kindWrite)
 }

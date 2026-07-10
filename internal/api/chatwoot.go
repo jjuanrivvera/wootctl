@@ -16,6 +16,18 @@ func NormalizeList(data []byte) ([]Rec, error) {
 	return items, err
 }
 
+// NormalizeRecord unwraps a single-object response's envelopes ({"payload":{…}},
+// {"payload":{"webhook":{…}}}) for rendering, returning the input unchanged when it is
+// not enveloped. Used by generic create/update, whose raw output would otherwise leak
+// the wrapper into tables and --jq paths.
+func NormalizeRecord(data Rec) Rec {
+	var out json.RawMessage
+	if err := decodeOne(data, &out); err != nil || len(out) == 0 {
+		return data
+	}
+	return out
+}
+
 // --- application API (account-scoped unless noted) ---
 
 func (c *Client) AgentBots() *Resource[Rec] { return NewResource[Rec](c, c.AccountPath("agent_bots")) }

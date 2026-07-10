@@ -26,6 +26,7 @@ func TestDecodeList_Envelopes(t *testing.T) {
 		{"data array", `{"data":[{"id":1}]}`, 1, false, -1},
 		{"conversations shape", `{"data":{"meta":{"mine_count":2,"all_count":7},"payload":[{"id":9}]}}`, 1, true, -1},
 		{"single array key (audit logs)", `{"audit_logs":[{"id":1}],"current_page":1,"per_page":15,"total_entries":31}`, 1, true, 31},
+		{"double-nested payload (webhooks)", `{"payload":{"webhooks":[{"id":1},{"id":2}]}}`, 2, false, -1},
 		{"empty array", `[]`, 0, false, -1},
 		{"empty body", ``, 0, false, -1},
 		{"null", `null`, 0, false, -1},
@@ -61,9 +62,10 @@ func TestDecodeList_Rejects(t *testing.T) {
 
 func TestDecodeOne_Envelopes(t *testing.T) {
 	for name, body := range map[string]string{
-		"direct":  `{"id":5,"name":"x"}`,
-		"payload": `{"payload":{"id":5,"name":"x"}}`,
-		"data":    `{"data":{"id":5,"name":"x"}}`,
+		"direct":            `{"id":5,"name":"x"}`,
+		"payload":           `{"payload":{"id":5,"name":"x"}}`,
+		"data":              `{"data":{"id":5,"name":"x"}}`,
+		"singleton wrapper": `{"payload":{"webhook":{"id":5,"name":"x"}}}`,
 	} {
 		t.Run(name, func(t *testing.T) {
 			var rec testRec

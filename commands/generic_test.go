@@ -260,3 +260,13 @@ func TestGeneric_UpdateInheritedFieldsDropRequired(t *testing.T) {
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "--role")
 }
+
+func TestGeneric_CreateUnwrapsDoubleNestedEnvelope(t *testing.T) {
+	// Chatwoot wraps webhook create as {"payload":{"webhook":{…}}} — the rendered record
+	// must be the webhook itself, not the wrapper.
+	e := newEnv(t, jsonHandler(`{"payload":{"webhook":{"id":3,"url":"https://x"}}}`))
+	out, _, err := e.run("webhooks", "create", "--url", "https://x", "-o", "json")
+	require.NoError(t, err)
+	assert.Contains(t, out, `"id": 3`)
+	assert.NotContains(t, out, `"payload"`)
+}

@@ -102,10 +102,21 @@ func decodeList[T any](data []byte) ([]T, *ListMeta, error) {
 	if err := json.Unmarshal(trim, &env); err != nil {
 		return nil, nil, fmt.Errorf("decode list envelope: %w", err)
 	}
-	if arr := bytes.TrimSpace(env.Payload); len(arr) > 0 && arr[0] == '[' {
-		var items []T
-		err := json.Unmarshal(arr, &items)
-		return items, env.Meta, err
+	if p := bytes.TrimSpace(env.Payload); len(p) > 0 {
+		if p[0] == '[' {
+			var items []T
+			err := json.Unmarshal(p, &items)
+			return items, env.Meta, err
+		}
+		if p[0] == '{' { // {"payload":{"webhooks":[…]}} — the double-nested webhooks shape
+			items, meta, err := decodeList[T](p)
+			if err == nil {
+				if meta == nil {
+					meta = env.Meta
+				}
+				return items, meta, nil
+			}
+		}
 	}
 	if d := bytes.TrimSpace(env.Data); len(d) > 0 {
 		if d[0] == '[' {
@@ -171,12 +182,28 @@ func decodeOne(data []byte, out any) error {
 		}
 		if json.Unmarshal(trim, &env) == nil {
 			if p := bytes.TrimSpace(env.Payload); len(p) > 0 && p[0] == '{' {
-				return json.Unmarshal(p, out)
+				return json.Unmarshal(unwrapSingleton(p), out)
 			}
 			if d := bytes.TrimSpace(env.Data); len(d) > 0 && d[0] == '{' {
-				return json.Unmarshal(d, out)
+				return json.Unmarshal(unwrapSingleton(d), out)
 			}
 		}
 	}
 	return json.Unmarshal(trim, out)
+}
+
+// unwrapSingleton peels one more wrapper when an unwrapped envelope holds exactly ONE
+// object-valued key ({"payload":{"webhook":{…}}} → the webhook). Real records always
+// carry several fields, so a singleton object key can only be another wrapper.
+func unwrapSingleton(obj []byte) []byte {
+	var m map[string]json.RawMessage
+	if json.Unmarshal(obj, &m) != nil || len(m) != 1 {
+		return obj
+	}
+	for _, v := range m {
+		if inner := bytes.TrimSpace(v); len(inner) > 0 && inner[0] == '{' {
+			return inner
+		}
+	}
+	return obj
 }
