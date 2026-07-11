@@ -79,8 +79,8 @@ else
 fi
 
 printf '%s %s installed to %s/%s\n' "$BINARY" "$VERSION" "$dir" "$BINARY"
+# shellcheck disable=SC2016  # the PATH hint is a literal string for the user to copy, not an expansion
 case ":${PATH}:" in
   *":${dir}:"*) ;;
-  # shellcheck disable=SC2016  # $PATH is intentionally literal in the copy-paste hint
   *) printf 'note: %s is not on your PATH — add:\n  export PATH="%s:$PATH"\n' "$dir" "$dir" >&2 ;;
 esac
