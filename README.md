@@ -1,5 +1,7 @@
 # wootctl
 
+> 🏭 Part of the [cliwright](https://cliwright.jjuanrivvera.com) CLI fleet.
+
 A fast, scriptable CLI for the full [Chatwoot](https://www.chatwoot.com) API.
 
 `wootctl` wraps every operation Chatwoot documents — 144/144 across the application,
