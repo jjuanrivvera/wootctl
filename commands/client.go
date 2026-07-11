@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jjuanrivvera/cwctl/internal/api"
+	"github.com/jjuanrivvera/wootctl/internal/api"
 )
 
 // The public client API drives contact-facing chat flows (build your own widget/importer).
@@ -96,7 +96,7 @@ func clientContactCreateCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "create <inbox-identifier>",
 		Short:   "Create a contact in a public inbox",
-		Example: `  cwctl client contacts create Fbd1h… --name Ana --email ana@example.com`,
+		Example: `  wootctl client contacts create Fbd1h… --name Ana --email ana@example.com`,
 		Args:    cobra.ExactArgs(1),
 	}
 	collect := registerBodyFlags(cmd, []field{
@@ -123,7 +123,7 @@ func clientContactGetCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "get <inbox-identifier> <contact-identifier>",
 		Short:   "Get a public contact (by its source id)",
-		Example: "  cwctl client contacts get Fbd1h… c7f3…",
+		Example: "  wootctl client contacts get Fbd1h… c7f3…",
 		Args:    cobra.ExactArgs(2),
 		RunE: runE(d, true, []string{"id", "source_id", "name", "email"}, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -137,7 +137,7 @@ func clientContactUpdateCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "update <inbox-identifier> <contact-identifier>",
 		Short:   "Update a public contact",
-		Example: `  cwctl client contacts update Fbd1h… c7f3… --name "Ana María"`,
+		Example: `  wootctl client contacts update Fbd1h… c7f3… --name "Ana María"`,
 		Args:    cobra.ExactArgs(2),
 	}
 	collect := registerBodyFlags(cmd, []field{
@@ -162,7 +162,7 @@ func clientConvListCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "list <inbox-identifier> <contact-identifier>",
 		Short:   "List a contact's conversations in a public inbox",
-		Example: "  cwctl client conversations list Fbd1h… c7f3…",
+		Example: "  wootctl client conversations list Fbd1h… c7f3…",
 		Args:    cobra.ExactArgs(2),
 		RunE: runListE(d, true, []string{"id", "inbox_id", "status"}, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -177,7 +177,7 @@ func clientConvCreateCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "create <inbox-identifier> <contact-identifier>",
 		Short:   "Start a conversation as a contact",
-		Example: "  cwctl client conversations create Fbd1h… c7f3…",
+		Example: "  wootctl client conversations create Fbd1h… c7f3…",
 		Args:    cobra.ExactArgs(2),
 		RunE: runE(d, true, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var body map[string]any
@@ -201,7 +201,7 @@ func clientConvGetCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "get <inbox-identifier> <contact-identifier> <conversation-id>",
 		Short:   "Get one of the contact's conversations",
-		Example: "  cwctl client conversations get Fbd1h… c7f3… 42",
+		Example: "  wootctl client conversations get Fbd1h… c7f3… 42",
 		Args:    cobra.ExactArgs(3),
 		RunE: runE(d, true, []string{"id", "inbox_id", "status"}, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -215,7 +215,7 @@ func clientConvResolveCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "resolve <inbox-identifier> <contact-identifier> <conversation-id>",
 		Short:   "Resolve a conversation as the contact (toggle_status)",
-		Example: "  cwctl client conversations resolve Fbd1h… c7f3… 42",
+		Example: "  wootctl client conversations resolve Fbd1h… c7f3… 42",
 		Args:    cobra.ExactArgs(3),
 		RunE: runE(d, true, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -230,7 +230,7 @@ func clientConvToggleTypingCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "toggle-typing <inbox-identifier> <contact-identifier> <conversation-id>",
 		Short:   "Flip the contact-side typing indicator",
-		Example: "  cwctl client conversations toggle-typing Fbd1h… c7f3… 42 --typing-status on",
+		Example: "  wootctl client conversations toggle-typing Fbd1h… c7f3… 42 --typing-status on",
 		Args:    cobra.ExactArgs(3),
 		RunE: runE(d, true, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -248,7 +248,7 @@ func clientConvUpdateLastSeenCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "update-last-seen <inbox-identifier> <contact-identifier> <conversation-id>",
 		Short:   "Mark the conversation read up to now (contact side)",
-		Example: "  cwctl client conversations update-last-seen Fbd1h… c7f3… 42",
+		Example: "  wootctl client conversations update-last-seen Fbd1h… c7f3… 42",
 		Args:    cobra.ExactArgs(3),
 		RunE: runE(d, true, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -262,7 +262,7 @@ func clientMsgListCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "list <inbox-identifier> <contact-identifier> <conversation-id>",
 		Short:   "List messages in a public conversation",
-		Example: "  cwctl client messages list Fbd1h… c7f3… 42",
+		Example: "  wootctl client messages list Fbd1h… c7f3… 42",
 		Args:    cobra.ExactArgs(3),
 		RunE: runListE(d, true, []string{"id", "content", "message_type"}, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -277,7 +277,7 @@ func clientMsgCreateCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "create <inbox-identifier> <contact-identifier> <conversation-id>",
 		Short:   "Send a message as the contact",
-		Example: `  cwctl client messages create Fbd1h… c7f3… 42 --content "gracias!"`,
+		Example: `  wootctl client messages create Fbd1h… c7f3… 42 --content "gracias!"`,
 		Args:    cobra.ExactArgs(3),
 		RunE: runE(d, true, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			body := map[string]any{"content": content}
@@ -300,7 +300,7 @@ func clientMsgUpdateCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "update <inbox-identifier> <contact-identifier> <conversation-id> <message-id>",
 		Short:   "Update a message (submit interactive form/select values)",
-		Example: `  cwctl client messages update Fbd1h… c7f3… 42 9001 --submitted-values '[{"name":"size","value":"M"}]'`,
+		Example: `  wootctl client messages update Fbd1h… c7f3… 42 9001 --submitted-values '[{"name":"size","value":"M"}]'`,
 		Args:    cobra.ExactArgs(4),
 		RunE: runE(d, true, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var vals any

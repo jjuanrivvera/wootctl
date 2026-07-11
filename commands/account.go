@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jjuanrivvera/cwctl/internal/api"
+	"github.com/jjuanrivvera/wootctl/internal/api"
 )
 
 // account is Extra-only: its endpoint IS the account-scope path itself
@@ -35,7 +35,7 @@ func accountGetCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "get",
 		Short:   "Get the current account's details",
-		Example: "  cwctl account get -o yaml",
+		Example: "  wootctl account get -o yaml",
 		Args:    cobra.NoArgs,
 		RunE: runE(d, false, []string{"id", "name", "locale", "domain"}, func(cmd *cobra.Command, c *api.Client, _ []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -49,8 +49,8 @@ func accountUpdateCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "update",
 		Short: "Update the current account",
-		Example: `  cwctl account update --name "Soporte Invitas"
-  cwctl account update -d '{"locale":"es","timezone":"America/Bogota"}'`,
+		Example: `  wootctl account update --name "Soporte Invitas"
+  wootctl account update -d '{"locale":"es","timezone":"America/Bogota"}'`,
 		Args: cobra.NoArgs,
 	}
 	collect := registerBodyFlags(cmd, []field{

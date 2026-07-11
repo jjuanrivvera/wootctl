@@ -1,6 +1,6 @@
 # Backup, restore & sync
 
-Beyond wrapping the API, cwctl treats your account **config** as something you can version in
+Beyond wrapping the API, wootctl treats your account **config** as something you can version in
 git and move between instances. This is the multi-instance payoff a single-instance tool
 can't offer.
 
@@ -18,8 +18,8 @@ endpoint).
 ## backup
 
 ```bash
-cwctl backup --dir ./chatwoot-config
-cwctl backup --dir ./cfg --only labels,canned-responses
+wootctl backup --dir ./chatwoot-config
+wootctl backup --dir ./cfg --only labels,canned-responses
 ```
 
 Writes one YAML file per kind, keeping **only the writable fields** — `id`, timestamps, and
@@ -29,9 +29,9 @@ directory to git and you have versioned, reviewable Chatwoot config.
 ## restore
 
 ```bash
-cwctl restore --dir ./chatwoot-config --dry-run     # preview — always do this first
-cwctl restore --dir ./chatwoot-config               # create missing, update changed, skip unchanged
-cwctl restore --dir ./chatwoot-config --only labels --prune   # also delete drift
+wootctl restore --dir ./chatwoot-config --dry-run     # preview — always do this first
+wootctl restore --dir ./chatwoot-config               # create missing, update changed, skip unchanged
+wootctl restore --dir ./chatwoot-config --only labels --prune   # also delete drift
 ```
 
 Reconciles the directory into the active profile's account:
@@ -44,10 +44,10 @@ Reconciles the directory into the active profile's account:
 ## sync
 
 ```bash
-cwctl sync --to production --dry-run
-cwctl sync --to production --only canned-responses,labels
-cwctl --profile staging sync --to production --prune
-cwctl sync --from staging --to production          # explicit source
+wootctl sync --to production --dry-run
+wootctl sync --to production --only canned-responses,labels
+wootctl --profile staging sync --to production --prune
+wootctl sync --from staging --to production          # explicit source
 ```
 
 Same reconcile, but the desired state is another profile's **live** account instead of a
@@ -62,10 +62,10 @@ active profile's `--base-url`/`--account-id` flags never leak across instances).
   filters, rules, bots), `url` (webhooks), `attribute_key` (custom attributes).
 - **Unchanged = writable fields equal.** Only writable fields are compared, canonicalized as
   JSON, so field order and equivalent encodings never create phantom updates.
-- **Ambiguous keys are never touched.** If two resources in an account share a key, cwctl
+- **Ambiguous keys are never touched.** If two resources in an account share a key, wootctl
   warns and skips them — it will never update or prune an arbitrary one of two same-named
   resources.
 - **Destructive by classification.** `restore` and `sync` can delete with `--prune`, so
-  `cwctl agent guard` hard-blocks them for AI agents. `backup` is read-only and stays allowed.
+  `wootctl agent guard` hard-blocks them for AI agents. `backup` is read-only and stays allowed.
 - **Always `--dry-run` first.** Both print a per-resource plan (`+ create`, `~ update`,
   `- prune`) and a summary before you commit to the real thing.

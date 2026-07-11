@@ -43,16 +43,16 @@ func TestConfig_LoadMissingIsEmpty(t *testing.T) {
 
 func TestResolveProfileName_Precedence(t *testing.T) {
 	c := &Config{CurrentProfile: "fromfile"}
-	t.Setenv("CWCTL_PROFILE", "")
+	t.Setenv("WOOTCTL_PROFILE", "")
 	assert.Equal(t, "flag", c.ResolveProfileName("flag"))
 	assert.Equal(t, "fromfile", c.ResolveProfileName(""))
 
-	t.Setenv("CWCTL_PROFILE", "fromenv")
+	t.Setenv("WOOTCTL_PROFILE", "fromenv")
 	assert.Equal(t, "fromenv", c.ResolveProfileName(""))
 	assert.Equal(t, "flag", c.ResolveProfileName("flag"), "flag still wins over env")
 
 	empty := &Config{}
-	t.Setenv("CWCTL_PROFILE", "")
+	t.Setenv("WOOTCTL_PROFILE", "")
 	assert.Equal(t, DefaultProfile, empty.ResolveProfileName(""))
 }
 
@@ -90,17 +90,17 @@ func TestDirAndPath_XDG(t *testing.T) {
 	t.Setenv("XDG_CONFIG_HOME", base)
 	dir, err := Dir()
 	require.NoError(t, err)
-	assert.Equal(t, filepath.Join(base, "cwctl"), dir)
+	assert.Equal(t, filepath.Join(base, "wootctl"), dir)
 	p, err := Path()
 	require.NoError(t, err)
-	assert.Equal(t, filepath.Join(base, "cwctl", "config.yaml"), p)
+	assert.Equal(t, filepath.Join(base, "wootctl", "config.yaml"), p)
 }
 
 func TestDir_HomeFallback(t *testing.T) {
 	t.Setenv("XDG_CONFIG_HOME", "")
 	dir, err := Dir()
 	require.NoError(t, err)
-	assert.Contains(t, dir, ".cwctl-cli")
+	assert.Contains(t, dir, ".wootctl-cli")
 }
 
 func TestLoad_UsesXDG(t *testing.T) {

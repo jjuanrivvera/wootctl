@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jjuanrivvera/cwctl/internal/api"
+	"github.com/jjuanrivvera/wootctl/internal/api"
 )
 
 func init() {
@@ -58,7 +58,7 @@ func contactSearchCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "search",
 		Short:   "Search contacts by name, identifier, email, or phone",
-		Example: "  cwctl contacts search --q ana\n  cwctl contacts search --q +57300 -o json",
+		Example: "  wootctl contacts search --q ana\n  wootctl contacts search --q +57300 -o json",
 		Args:    cobra.NoArgs,
 		RunE: runListE(d, false, []string{"id", "name", "email", "phone_number"}, func(cmd *cobra.Command, c *api.Client, _ []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -84,8 +84,8 @@ func contactFilterCmd(d *deps) *cobra.Command {
 		Use:   "filter",
 		Short: "Filter contacts with the query DSL",
 		Long:  "POST a filter payload: an array of {attribute_key, filter_operator, values, query_operator} objects.",
-		Example: `  cwctl contacts filter --payload '[{"attribute_key":"country_code","filter_operator":"equal_to","values":["CO"]}]'
-  cwctl contacts filter --payload @filter.json`,
+		Example: `  wootctl contacts filter --payload '[{"attribute_key":"country_code","filter_operator":"equal_to","values":["CO"]}]'
+  wootctl contacts filter --payload @filter.json`,
 		Args: cobra.NoArgs,
 		RunE: runListE(d, false, []string{"id", "name", "email", "phone_number"}, func(cmd *cobra.Command, c *api.Client, _ []string) (json.RawMessage, error) {
 			raw, err := readDataArg(cmd, payload)
@@ -116,8 +116,8 @@ func contactMergeCmd(d *deps) *cobra.Command {
 		Use:   "merge",
 		Short: "Merge two contacts (the mergee is deleted)",
 		Long:  "Merge the mergee contact into the base contact. The base keeps all conversations and data; the mergee is deleted. This cannot be undone.",
-		Example: `  cwctl contacts merge --base 1 --mergee 2
-  cwctl contacts merge --base 1 --mergee 2 --dry-run`,
+		Example: `  wootctl contacts merge --base 1 --mergee 2
+  wootctl contacts merge --base 1 --mergee 2 --dry-run`,
 		Args: cobra.NoArgs,
 		RunE: runE(d, false, nil, func(cmd *cobra.Command, c *api.Client, _ []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -137,7 +137,7 @@ func contactConversationsCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "conversations <id>",
 		Short:   "List a contact's conversations",
-		Example: "  cwctl contacts conversations 12",
+		Example: "  wootctl contacts conversations 12",
 		Args:    cobra.ExactArgs(1),
 		RunE: runListE(d, false, []string{"id", "inbox_id", "status"}, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -151,7 +151,7 @@ func contactContactableInboxesCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "contactable-inboxes <id>",
 		Short:   "List the inboxes a contact can be reached through",
-		Example: "  cwctl contacts contactable-inboxes 12",
+		Example: "  wootctl contacts contactable-inboxes 12",
 		Args:    cobra.ExactArgs(1),
 		RunE: runListE(d, false, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -167,7 +167,7 @@ func contactCreateContactInboxCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "create-contact-inbox <id>",
 		Short:   "Attach a contact to an inbox (creates a contact-inbox link)",
-		Example: "  cwctl contacts create-contact-inbox 12 --inbox-id 3",
+		Example: "  wootctl contacts create-contact-inbox 12 --inbox-id 3",
 		Args:    cobra.ExactArgs(1),
 		RunE: runE(d, false, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			body := map[string]any{"inbox_id": inboxID}
@@ -189,7 +189,7 @@ func contactLabelsCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "labels <id>",
 		Short:   "List a contact's labels",
-		Example: "  cwctl contacts labels 12",
+		Example: "  wootctl contacts labels 12",
 		Args:    cobra.ExactArgs(1),
 		RunE: runListE(d, false, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -204,7 +204,7 @@ func contactAddLabelsCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "add-labels <id>",
 		Short:   "Add labels to a contact (replaces the label set)",
-		Example: `  cwctl contacts add-labels 12 --labels vip,billing`,
+		Example: `  wootctl contacts add-labels 12 --labels vip,billing`,
 		Args:    cobra.ExactArgs(1),
 		RunE: runE(d, false, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage

@@ -23,7 +23,7 @@ func TestGeneric_ListRendersTable(t *testing.T) {
 }
 
 func TestGeneric_ListJSONKeepsUnknownFields(t *testing.T) {
-	// A field cwctl knows nothing about must survive to -o json (DECISIONS #19).
+	// A field wootctl knows nothing about must survive to -o json (DECISIONS #19).
 	e := newEnv(t, jsonHandler(`{"payload":[{"id":1,"title":"vip","brand_new_field":"kept"}]}`))
 	out, _, err := e.run("labels", "list", "-o", "json")
 	require.NoError(t, err)

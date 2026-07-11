@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jjuanrivvera/cwctl/internal/api"
+	"github.com/jjuanrivvera/wootctl/internal/api"
 )
 
 func init() {
@@ -61,7 +61,7 @@ func convMetaCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "meta",
 		Short:   "Conversation counts (mine, unassigned, assigned, all)",
-		Example: "  cwctl conversations meta --status open",
+		Example: "  wootctl conversations meta --status open",
 		Args:    cobra.NoArgs,
 		RunE: runE(d, false, nil, func(cmd *cobra.Command, c *api.Client, _ []string) (json.RawMessage, error) {
 			query := url.Values{}
@@ -88,8 +88,8 @@ func convFilterCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "filter",
 		Short: "Filter conversations with the query DSL",
-		Example: `  cwctl conversations filter --payload '[{"attribute_key":"status","filter_operator":"equal_to","values":["pending"]}]'
-  cwctl conversations filter --payload @filter.json`,
+		Example: `  wootctl conversations filter --payload '[{"attribute_key":"status","filter_operator":"equal_to","values":["pending"]}]'
+  wootctl conversations filter --payload @filter.json`,
 		Args: cobra.NoArgs,
 		RunE: runListE(d, false, []string{"id", "inbox_id", "status", "priority"}, func(cmd *cobra.Command, c *api.Client, _ []string) (json.RawMessage, error) {
 			raw, err := readDataArg(cmd, payload)
@@ -118,7 +118,7 @@ func convLabelsCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "labels <conversation-id>",
 		Short:   "List a conversation's labels",
-		Example: "  cwctl conversations labels 42",
+		Example: "  wootctl conversations labels 42",
 		Args:    cobra.ExactArgs(1),
 		RunE: runListE(d, false, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -133,7 +133,7 @@ func convAddLabelsCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "add-labels <conversation-id>",
 		Short:   "Add labels to a conversation (replaces the label set)",
-		Example: "  cwctl conversations add-labels 42 --labels billing,urgente",
+		Example: "  wootctl conversations add-labels 42 --labels billing,urgente",
 		Args:    cobra.ExactArgs(1),
 		RunE: runE(d, false, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -152,8 +152,8 @@ func convAssignCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "assign <conversation-id>",
 		Short: "Assign a conversation to an agent or a team",
-		Example: `  cwctl conversations assign 42 --assignee-id 7
-  cwctl conversations assign 42 --team-id 2`,
+		Example: `  wootctl conversations assign 42 --assignee-id 7
+  wootctl conversations assign 42 --team-id 2`,
 		Args: cobra.ExactArgs(1),
 		RunE: runE(d, false, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			body := map[string]any{}
@@ -182,8 +182,8 @@ func convToggleStatusCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "toggle-status <conversation-id>",
 		Short: "Change a conversation's status (open/resolved/pending/snoozed)",
-		Example: `  cwctl conversations toggle-status 42 --status resolved
-  cwctl conversations toggle-status 42 --status snoozed --snoozed-until 1757506877`,
+		Example: `  wootctl conversations toggle-status 42 --status resolved
+  wootctl conversations toggle-status 42 --status snoozed --snoozed-until 1757506877`,
 		Args: cobra.ExactArgs(1),
 		RunE: runE(d, false, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			body := map[string]any{"status": status}
@@ -206,7 +206,7 @@ func convTogglePriorityCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "toggle-priority <conversation-id>",
 		Short:   "Change a conversation's priority",
-		Example: "  cwctl conversations toggle-priority 42 --priority urgent",
+		Example: "  wootctl conversations toggle-priority 42 --priority urgent",
 		Args:    cobra.ExactArgs(1),
 		RunE: runE(d, false, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -226,7 +226,7 @@ func convToggleTypingCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "toggle-typing <conversation-id>",
 		Short:   "Flip the typing indicator on or off",
-		Example: "  cwctl conversations toggle-typing 42 --typing-status on",
+		Example: "  wootctl conversations toggle-typing 42 --typing-status on",
 		Args:    cobra.ExactArgs(1),
 		RunE: runE(d, false, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			body := map[string]any{"typing_status": typing}
@@ -249,7 +249,7 @@ func convSetCustomAttributesCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "set-custom-attributes <conversation-id>",
 		Short:   "Set custom attributes on a conversation",
-		Example: `  cwctl conversations set-custom-attributes 42 --attributes '{"order_id":"12345"}'`,
+		Example: `  wootctl conversations set-custom-attributes 42 --attributes '{"order_id":"12345"}'`,
 		Args:    cobra.ExactArgs(1),
 		RunE: runE(d, false, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var obj map[string]any
@@ -271,7 +271,7 @@ func convReportingEventsCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "reporting-events <conversation-id>",
 		Short:   "List a conversation's reporting events (first response, resolved, …)",
-		Example: "  cwctl conversations reporting-events 42",
+		Example: "  wootctl conversations reporting-events 42",
 		Args:    cobra.ExactArgs(1),
 		RunE: runListE(d, false, []string{"id", "name", "value", "created_at"}, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage

@@ -8,7 +8,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jjuanrivvera/cwctl/internal/api"
+	"github.com/jjuanrivvera/wootctl/internal/api"
 )
 
 // csat wraps the unauthenticated CSAT survey page endpoint. The swagger's own guidance is
@@ -33,8 +33,8 @@ func csatPageCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "page <conversation-uuid>",
 		Short: "Print (or fetch with --fetch) the CSAT survey page URL for a conversation",
-		Example: `  cwctl csat page 8f286537-3216-4d47-a869-6a08128d9dc9
-  cwctl csat page 8f286537-3216-4d47-a869-6a08128d9dc9 --fetch > survey.html`,
+		Example: `  wootctl csat page 8f286537-3216-4d47-a869-6a08128d9dc9
+  wootctl csat page 8f286537-3216-4d47-a869-6a08128d9dc9 --fetch > survey.html`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, _, err := d.getAPIClient(false)

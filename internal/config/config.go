@@ -1,4 +1,4 @@
-// Package config resolves cwctl configuration with a manual flag > env > file > default
+// Package config resolves wootctl configuration with a manual flag > env > file > default
 // precedence (no Viper, per the cliwright house pattern). Profiles let one user drive
 // several Chatwoot instances/accounts; the secret tokens never live here — only in the OS
 // keyring (see internal/auth).
@@ -37,16 +37,16 @@ type Config struct {
 	path string `yaml:"-"`
 }
 
-// Dir returns the configuration directory: $XDG_CONFIG_HOME/cwctl if set, else ~/.cwctl-cli.
+// Dir returns the configuration directory: $XDG_CONFIG_HOME/wootctl if set, else ~/.wootctl-cli.
 func Dir() (string, error) {
 	if xdg := os.Getenv("XDG_CONFIG_HOME"); xdg != "" {
-		return filepath.Join(xdg, "cwctl"), nil
+		return filepath.Join(xdg, "wootctl"), nil
 	}
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(home, ".cwctl-cli"), nil
+	return filepath.Join(home, ".wootctl-cli"), nil
 }
 
 // Path returns the config file path.
@@ -160,14 +160,14 @@ func (c *Config) ProfileNames() []string {
 	return names
 }
 
-// ResolveProfileName applies precedence: explicit flag > CWCTL_PROFILE > current_profile >
+// ResolveProfileName applies precedence: explicit flag > WOOTCTL_PROFILE > current_profile >
 // default.
 func (c *Config) ResolveProfileName(flag string) string {
-	return FirstNonEmpty(flag, os.Getenv("CWCTL_PROFILE"), c.CurrentProfile, DefaultProfile)
+	return FirstNonEmpty(flag, os.Getenv("WOOTCTL_PROFILE"), c.CurrentProfile, DefaultProfile)
 }
 
 // FirstNonEmpty returns the first non-empty string — the manual precedence helper used
-// across cwctl instead of a config framework.
+// across wootctl instead of a config framework.
 func FirstNonEmpty(vals ...string) string {
 	for _, v := range vals {
 		if v != "" {

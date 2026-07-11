@@ -12,7 +12,7 @@ import (
 // rewrite the terminal title, move the cursor, or inject color — a real terminal-escape
 // injection. Machine formats (json/yaml/csv) are left faithful; only the human table view
 // and error output pass through here. Ported from the official Chatwoot CLI's SanitizeText,
-// which handles this and cwctl previously did not.
+// which handles this and wootctl previously did not.
 func SanitizeTerminal(s string) string {
 	if !strings.ContainsFunc(s, func(r rune) bool { return r == 0x1b || unicode.IsControl(r) }) {
 		return s // fast path: nothing to strip (the common case)

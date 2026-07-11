@@ -1,6 +1,6 @@
 {
   "_comment": "Spec-derived manifest (cliwright GOAL.md §0/§11). The FULL Chatwoot API is enumerated from Chatwoot's own OpenAPI spec (see api_method_source) — the same spec that renders developers.chatwoot.com — not model recall. Every verb maps 1:1 to an enumerated operation ('METHOD path'). scripts/spec-check.sh enforces surface⊆manifest (consistency); scripts/spec-completeness.sh enforces manifest≈full-API (completeness). Resources are grouped application → platform (platform app token) → client (public, unauthenticated), alphabetical within group (DECISIONS.md). The one flat `methods` entry is a swagger duplicate covered by an existing verb (DECISIONS.md #2).",
-  "binary": "cwctl",
+  "binary": "wootctl",
   "base_url": "per-profile instance root (e.g. https://app.chatwoot.com); API paths /api/v1, /api/v2 (reports), /platform/api/v1, /public/api/v1",
   "auth": "api-key-header `api_access_token`: user token (application API), platform app token (platform API); public/client API is unauthenticated",
   "pagination": "page= query param (server-fixed 25/page on paginated lists); many lists unpaginated; conversations/contacts expose meta counts",

@@ -1,6 +1,6 @@
 package commands
 
-import "github.com/jjuanrivvera/cwctl/internal/api"
+import "github.com/jjuanrivvera/wootctl/internal/api"
 
 func init() {
 	registerResource("", resourceSpec[api.Rec]{

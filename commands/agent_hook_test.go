@@ -28,7 +28,7 @@ func TestHookScript_BashExecution(t *testing.T) {
 	// fully populated (canonical + alias paths).
 	hookContent := hookScript(classifyAPICommands(false))
 	tmpDir := t.TempDir()
-	hookFile := filepath.Join(tmpDir, "cwctl-guard.sh")
+	hookFile := filepath.Join(tmpDir, "wootctl-guard.sh")
 	if err := os.WriteFile(hookFile, []byte(hookContent), 0o755); err != nil { // #nosec G306 -- hook must be executable
 		t.Fatalf("write hook: %v", err)
 	}
@@ -73,67 +73,67 @@ func TestHookScript_BashExecution(t *testing.T) {
 		wantDenied bool
 	}{
 		// --- direct blocked commands ---
-		{"labels_delete_denied", bashPayload("cwctl labels delete 5"), true},
-		{"contacts_delete_denied", bashPayload("cwctl contacts delete 12"), true},
-		{"contacts_merge_denied", bashPayload("cwctl contacts merge --base 1 --mergee 2"), true},
-		{"messages_delete_denied", bashPayload("cwctl messages delete 42 105"), true},
-		{"teams_remove_members_denied", bashPayload("cwctl teams remove-members 3 --user-ids 1"), true},
-		{"inboxes_remove_members_denied", bashPayload("cwctl inboxes remove-members 3 --user-ids 1"), true},
-		{"integrations_delete_hook_denied", bashPayload("cwctl integrations delete-hook 5"), true},
-		{"platform_users_delete_denied", bashPayload("cwctl platform users delete 7"), true},
-		{"platform_accounts_delete_denied", bashPayload("cwctl platform accounts delete 2"), true},
+		{"labels_delete_denied", bashPayload("wootctl labels delete 5"), true},
+		{"contacts_delete_denied", bashPayload("wootctl contacts delete 12"), true},
+		{"contacts_merge_denied", bashPayload("wootctl contacts merge --base 1 --mergee 2"), true},
+		{"messages_delete_denied", bashPayload("wootctl messages delete 42 105"), true},
+		{"teams_remove_members_denied", bashPayload("wootctl teams remove-members 3 --user-ids 1"), true},
+		{"inboxes_remove_members_denied", bashPayload("wootctl inboxes remove-members 3 --user-ids 1"), true},
+		{"integrations_delete_hook_denied", bashPayload("wootctl integrations delete-hook 5"), true},
+		{"platform_users_delete_denied", bashPayload("wootctl platform users delete 7"), true},
+		{"platform_accounts_delete_denied", bashPayload("wootctl platform accounts delete 2"), true},
 		// --- cobra alias paths (bypass without enumeration) ---
-		{"label_alias_delete_denied", bashPayload("cwctl label delete 5"), true},
-		{"msg_alias_delete_denied", bashPayload("cwctl msg delete 42 105"), true},
-		{"msgs_alias_delete_denied", bashPayload("cwctl msgs delete 42 105"), true},
-		{"contact_alias_merge_denied", bashPayload("cwctl contact merge --base 1 --mergee 2"), true},
-		{"canned_alias_delete_denied", bashPayload("cwctl canned delete 9"), true},
-		{"filters_alias_delete_denied", bashPayload("cwctl filters delete 4"), true},
+		{"label_alias_delete_denied", bashPayload("wootctl label delete 5"), true},
+		{"msg_alias_delete_denied", bashPayload("wootctl msg delete 42 105"), true},
+		{"msgs_alias_delete_denied", bashPayload("wootctl msgs delete 42 105"), true},
+		{"contact_alias_merge_denied", bashPayload("wootctl contact merge --base 1 --mergee 2"), true},
+		{"canned_alias_delete_denied", bashPayload("wootctl canned delete 9"), true},
+		{"filters_alias_delete_denied", bashPayload("wootctl filters delete 4"), true},
 		// --- alias minting ---
-		{"alias_set_denied", bashPayload(`cwctl alias set kill "labels delete"`), true},
+		{"alias_set_denied", bashPayload(`wootctl alias set kill "labels delete"`), true},
 		// --- obfuscation ---
-		{"quote_split_denied", bashPayload(`cwctl labels de""lete 5`), true},
-		{"single_quote_split_denied", bashPayload(`cwctl contacts me''rge --base 1 --mergee 2`), true},
-		{"backslash_denied", bashPayload(`cwctl labels de\lete 5`), true},
-		{"newline_continuation_denied", bashPayload("cwctl labels \\\ndelete 5"), true},
+		{"quote_split_denied", bashPayload(`wootctl labels de""lete 5`), true},
+		{"single_quote_split_denied", bashPayload(`wootctl contacts me''rge --base 1 --mergee 2`), true},
+		{"backslash_denied", bashPayload(`wootctl labels de\lete 5`), true},
+		{"newline_continuation_denied", bashPayload("wootctl labels \\\ndelete 5"), true},
 		// --- command position after separators ---
-		{"after_semicolon_denied", bashPayload("true; cwctl labels delete 5"), true},
-		{"after_pipe_denied", bashPayload("echo hi | cwctl labels delete 5"), true},
-		{"after_and_denied", bashPayload("true && cwctl contacts delete 12"), true},
-		{"trailing_separator_denied", bashPayload("cwctl labels delete 5;true"), true},
-		{"env_prefix_denied", bashPayload("env CWCTL_API_KEY=x cwctl labels delete 5"), true},
+		{"after_semicolon_denied", bashPayload("true; wootctl labels delete 5"), true},
+		{"after_pipe_denied", bashPayload("echo hi | wootctl labels delete 5"), true},
+		{"after_and_denied", bashPayload("true && wootctl contacts delete 12"), true},
+		{"trailing_separator_denied", bashPayload("wootctl labels delete 5;true"), true},
+		{"env_prefix_denied", bashPayload("env WOOTCTL_API_KEY=x wootctl labels delete 5"), true},
 		// --- path-invoked binaries ---
-		{"relative_path_binary_denied", bashPayload("./bin/cwctl labels delete 5"), true},
-		{"absolute_path_binary_denied", bashPayload("/usr/local/bin/cwctl labels delete 5"), true},
-		{"absolute_path_api_denied", bashPayload("/usr/local/bin/cwctl api DELETE api/v1/accounts/1/labels/5"), true},
+		{"relative_path_binary_denied", bashPayload("./bin/wootctl labels delete 5"), true},
+		{"absolute_path_binary_denied", bashPayload("/usr/local/bin/wootctl labels delete 5"), true},
+		{"absolute_path_api_denied", bashPayload("/usr/local/bin/wootctl api DELETE api/v1/accounts/1/labels/5"), true},
 		// --- raw api escape hatch (METHOD position; only GET/HEAD/OPTIONS pass) ---
-		{"api_delete_denied", bashPayload("cwctl api DELETE api/v1/accounts/1/labels/5"), true},
-		{"api_lowercase_delete_denied", bashPayload("cwctl api delete api/v1/accounts/1/labels/5"), true},
-		{"api_post_denied", bashPayload("cwctl api POST api/v1/accounts/1/labels -d '{}'"), true},
-		{"api_patch_denied", bashPayload("cwctl api PATCH api/v1/accounts/1/labels/5 -d '{}'"), true},
-		{"api_put_denied", bashPayload("cwctl api PUT api/v1/profile -d '{}'"), true},
-		{"api_flag_before_method_denied", bashPayload("cwctl api -q x=1 DELETE api/v1/accounts/1/labels/5"), true},
-		{"api_compound_get_then_delete_denied", bashPayload("cwctl api GET api/v1/profile;cwctl api DELETE api/v1/accounts/1/labels/5"), true},
+		{"api_delete_denied", bashPayload("wootctl api DELETE api/v1/accounts/1/labels/5"), true},
+		{"api_lowercase_delete_denied", bashPayload("wootctl api delete api/v1/accounts/1/labels/5"), true},
+		{"api_post_denied", bashPayload("wootctl api POST api/v1/accounts/1/labels -d '{}'"), true},
+		{"api_patch_denied", bashPayload("wootctl api PATCH api/v1/accounts/1/labels/5 -d '{}'"), true},
+		{"api_put_denied", bashPayload("wootctl api PUT api/v1/profile -d '{}'"), true},
+		{"api_flag_before_method_denied", bashPayload("wootctl api -q x=1 DELETE api/v1/accounts/1/labels/5"), true},
+		{"api_compound_get_then_delete_denied", bashPayload("wootctl api GET api/v1/profile;wootctl api DELETE api/v1/accounts/1/labels/5"), true},
 		// --- raw api reads stay allowed ---
-		{"api_get_allowed", bashPayload("cwctl api GET api/v1/profile"), false},
-		{"api_get_lowercase_allowed", bashPayload("cwctl api get api/v1/profile"), false},
-		{"api_head_allowed", bashPayload("cwctl api HEAD api/v1/profile"), false},
-		{"api_get_delete_in_path_allowed", bashPayload("cwctl api GET api/v1/accounts/1/labels/delete_club"), false},
+		{"api_get_allowed", bashPayload("wootctl api GET api/v1/profile"), false},
+		{"api_get_lowercase_allowed", bashPayload("wootctl api get api/v1/profile"), false},
+		{"api_head_allowed", bashPayload("wootctl api HEAD api/v1/profile"), false},
+		{"api_get_delete_in_path_allowed", bashPayload("wootctl api GET api/v1/accounts/1/labels/delete_club"), false},
 		// --- benign lookalikes that must stay allowed ---
-		{"conversations_list_allowed", bashPayload("cwctl conversations list --status open"), false},
-		{"create_with_delete_in_arg_allowed", bashPayload(`cwctl messages create 42 --content "how to delete a label"`), false},
+		{"conversations_list_allowed", bashPayload("wootctl conversations list --status open"), false},
+		{"create_with_delete_in_arg_allowed", bashPayload(`wootctl messages create 42 --content "how to delete a label"`), false},
 		{"cat_file_allowed", bashPayload("cat labels_delete.go"), false},
-		{"other_binary_allowed", bashPayload("mycwctl labels delete 5"), false},
-		{"other_binary_api_allowed", bashPayload("mycwctl api DELETE api/v1/accounts/1/labels/5"), false},
-		{"toggle_status_is_write_not_blocked", bashPayload("cwctl conversations toggle-status 42 --status resolved"), false},
-		{"conv_alias_list_allowed", bashPayload("cwctl conv list"), false},
+		{"other_binary_allowed", bashPayload("mywootctl labels delete 5"), false},
+		{"other_binary_api_allowed", bashPayload("mywootctl api DELETE api/v1/accounts/1/labels/5"), false},
+		{"toggle_status_is_write_not_blocked", bashPayload("wootctl conversations toggle-status 42 --status resolved"), false},
+		{"conv_alias_list_allowed", bashPayload("wootctl conv list"), false},
 		// --- MCP branch ---
-		{"mcp_labels_delete_denied", mcpPayload("mcp__cwctl__cw_labels_delete"), true},
-		{"mcp_contacts_merge_denied", mcpPayload("mcp__cwctl__cw_contacts_merge"), true},
-		{"mcp_audit_logs_hyphen_delete_denied", mcpPayload("mcp__cwctl__cw_agent-bots_delete"), true},
-		{"mcp_platform_users_delete_denied", mcpPayload("mcp__cwctl__cw_platform_users_delete"), true},
-		{"mcp_conversations_list_allowed", mcpPayload("mcp__cwctl__cw_conversations_list"), false},
-		{"mcp_near_miss_allowed", mcpPayload("mcp__cwctl__cw_labels_delete2"), false},
+		{"mcp_labels_delete_denied", mcpPayload("mcp__wootctl__cw_labels_delete"), true},
+		{"mcp_contacts_merge_denied", mcpPayload("mcp__wootctl__cw_contacts_merge"), true},
+		{"mcp_audit_logs_hyphen_delete_denied", mcpPayload("mcp__wootctl__cw_agent-bots_delete"), true},
+		{"mcp_platform_users_delete_denied", mcpPayload("mcp__wootctl__cw_platform_users_delete"), true},
+		{"mcp_conversations_list_allowed", mcpPayload("mcp__wootctl__cw_conversations_list"), false},
+		{"mcp_near_miss_allowed", mcpPayload("mcp__wootctl__cw_labels_delete2"), false},
 	}
 
 	for _, tc := range cases {
@@ -161,7 +161,7 @@ func TestHookScript_BashExecutionNoJq(t *testing.T) {
 
 	hookContent := hookScript(classifyAPICommands(false))
 	tmpDir := t.TempDir()
-	hookFile := filepath.Join(tmpDir, "cwctl-guard.sh")
+	hookFile := filepath.Join(tmpDir, "wootctl-guard.sh")
 	if err := os.WriteFile(hookFile, []byte(hookContent), 0o755); err != nil { // #nosec G306 -- hook must be executable
 		t.Fatalf("write hook: %v", err)
 	}
@@ -218,12 +218,12 @@ func TestHookScript_BashExecutionNoJq(t *testing.T) {
 		payload    string
 		wantDenied bool
 	}{
-		{"nojq_labels_delete_denied", bashPayload("cwctl labels delete 5"), true},
-		{"nojq_obfuscated_delete_denied", bashPayload(`cwctl labels de""lete 5`), true},
-		{"nojq_path_binary_denied", bashPayload("./bin/cwctl labels delete 5"), true},
-		{"nojq_api_delete_denied", bashPayload("cwctl api DELETE api/v1/accounts/1/labels/5"), true},
+		{"nojq_labels_delete_denied", bashPayload("wootctl labels delete 5"), true},
+		{"nojq_obfuscated_delete_denied", bashPayload(`wootctl labels de""lete 5`), true},
+		{"nojq_path_binary_denied", bashPayload("./bin/wootctl labels delete 5"), true},
+		{"nojq_api_delete_denied", bashPayload("wootctl api DELETE api/v1/accounts/1/labels/5"), true},
 		{"nojq_cat_file_allowed", bashPayload("cat labels_delete.go"), false},
-		{"nojq_create_allowed", bashPayload(`cwctl messages create 42 --content "delete this later"`), false},
+		{"nojq_create_allowed", bashPayload(`wootctl messages create 42 --content "delete this later"`), false},
 	}
 
 	for _, tc := range cases {

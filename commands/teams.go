@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jjuanrivvera/cwctl/internal/api"
+	"github.com/jjuanrivvera/wootctl/internal/api"
 )
 
 func init() {
@@ -35,7 +35,7 @@ func teamMembersCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "members <team-id>",
 		Short:   "List the agents in a team",
-		Example: "  cwctl teams members 3",
+		Example: "  wootctl teams members 3",
 		Args:    cobra.ExactArgs(1),
 		RunE: runListE(d, false, []string{"id", "name", "email", "role"}, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -52,7 +52,7 @@ func teamMembersEditCmd(use, method, short string) func(d *deps) *cobra.Command 
 		cmd := &cobra.Command{
 			Use:     use + " <team-id>",
 			Short:   short,
-			Example: "  cwctl teams " + use + " 3 --user-ids 1,2",
+			Example: "  wootctl teams " + use + " 3 --user-ids 1,2",
 			Args:    cobra.ExactArgs(1),
 			RunE: runE(d, false, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 				var out json.RawMessage

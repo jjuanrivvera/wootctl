@@ -13,9 +13,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/jjuanrivvera/cwctl/internal/api"
-	"github.com/jjuanrivvera/cwctl/internal/auth"
-	"github.com/jjuanrivvera/cwctl/internal/config"
+	"github.com/jjuanrivvera/wootctl/internal/api"
+	"github.com/jjuanrivvera/wootctl/internal/auth"
+	"github.com/jjuanrivvera/wootctl/internal/config"
 )
 
 // labelsKind is the registry entry used across these tests.
@@ -226,10 +226,10 @@ func TestSync_BetweenProfiles(t *testing.T) {
 
 	// Two profiles in an isolated config; env points the ACTIVE profile at source.
 	t.Setenv("XDG_CONFIG_HOME", t.TempDir())
-	t.Setenv("CWCTL_BASE_URL", "")
-	t.Setenv("CWCTL_ACCOUNT_ID", "")
-	t.Setenv("CWCTL_API_KEY", "")
-	t.Setenv("CWCTL_PROFILE", "")
+	t.Setenv("WOOTCTL_BASE_URL", "")
+	t.Setenv("WOOTCTL_ACCOUNT_ID", "")
+	t.Setenv("WOOTCTL_API_KEY", "")
+	t.Setenv("WOOTCTL_PROFILE", "")
 	t.Setenv("NO_COLOR", "1")
 
 	cfg, err := config.Load()

@@ -6,7 +6,7 @@ import (
 )
 
 // APIError is the typed error returned for any non-2xx response. Its Error() appends a
-// status-keyed hint so the user sees a next action ("run `cwctl auth login`"), not just
+// status-keyed hint so the user sees a next action ("run `wootctl auth login`"), not just
 // "request failed" — the difference between an actionable CLI and an opaque one.
 type APIError struct {
 	StatusCode int
@@ -41,15 +41,15 @@ func (e *APIError) Error() string {
 func hintForStatus(status int) string {
 	switch status {
 	case http.StatusUnauthorized: // 401
-		return "authentication failed; run `cwctl auth login` to store a valid api_access_token (platform paths need --platform-token)"
+		return "authentication failed; run `wootctl auth login` to store a valid api_access_token (platform paths need --platform-token)"
 	case http.StatusForbidden: // 403
 		return "your token lacks access here; check the agent's role (or use an administrator token)"
 	case http.StatusNotFound: // 404
-		return "not found; verify the id with `cwctl <resource> list` and confirm the account id (--account-id)"
+		return "not found; verify the id with `wootctl <resource> list` and confirm the account id (--account-id)"
 	case http.StatusUnprocessableEntity: // 422
 		return "the API rejected the payload; check required fields and value formats"
 	case http.StatusTooManyRequests: // 429
-		return "rate limited by the server; cwctl slows down automatically — retry shortly or lower --rps"
+		return "rate limited by the server; wootctl slows down automatically — retry shortly or lower --rps"
 	}
 	if status >= 500 {
 		return "server error, usually transient; retry shortly"

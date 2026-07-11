@@ -7,14 +7,14 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jjuanrivvera/cwctl/internal/config"
+	"github.com/jjuanrivvera/wootctl/internal/config"
 )
 
 func init() {
 	metaRegistrars = append(metaRegistrars, func(d *deps) *cobra.Command {
 		configCmd := &cobra.Command{
 			Use:   "config",
-			Short: "Inspect and edit cwctl configuration",
+			Short: "Inspect and edit wootctl configuration",
 			Long:  "View the config file, switch profiles, and set per-profile options. Secrets live in the keyring and are never shown here.",
 		}
 		configCmd.AddCommand(configPathCmd(d), configViewCmd(d), configSetCmd(d), configUseCmd(d), configListProfilesCmd(d))
@@ -43,8 +43,8 @@ func configViewCmd(d *deps) *cobra.Command {
 		Use:     "view",
 		Aliases: []string{"show"},
 		Short:   "Show the current configuration (secrets redacted)",
-		Example: `  cwctl config view
-  cwctl config view -o json`,
+		Example: `  wootctl config view
+  wootctl config view -o json`,
 		Args: cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			cfg, err := d.loadConfig()
@@ -58,7 +58,7 @@ func configViewCmd(d *deps) *cobra.Command {
 				"current_profile": cfg.CurrentProfile,
 				"profiles":        cfg.Profiles,
 				"aliases":         cfg.Aliases,
-				"token_storage":   "OS keyring with encrypted-file fallback (run `cwctl auth status` to verify)",
+				"token_storage":   "OS keyring with encrypted-file fallback (run `wootctl auth status` to verify)",
 			}
 			return d.render(cmd, mustJSON(view), nil)
 		},
@@ -69,9 +69,9 @@ func configSetCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:   "set <key> <value>",
 		Short: "Set a per-profile option (keys: base_url, account_id, rps)",
-		Example: `  cwctl config set base_url https://app.chatwoot.com
-  cwctl config set account_id 2
-  cwctl --profile staging config set rps 2`,
+		Example: `  wootctl config set base_url https://app.chatwoot.com
+  wootctl config set account_id 2
+  wootctl --profile staging config set rps 2`,
 		Args: cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			key, value := args[0], args[1]
@@ -121,7 +121,7 @@ func configUseCmd(d *deps) *cobra.Command {
 				return err
 			}
 			if _, ok := cfg.Profile(args[0]); !ok {
-				return fmt.Errorf("no such profile %q — create it with `cwctl --profile %s auth login`", args[0], args[0])
+				return fmt.Errorf("no such profile %q — create it with `wootctl --profile %s auth login`", args[0], args[0])
 			}
 			cfg.CurrentProfile = args[0]
 			if err := cfg.Save(); err != nil {

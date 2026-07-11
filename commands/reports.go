@@ -10,7 +10,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jjuanrivvera/cwctl/internal/api"
+	"github.com/jjuanrivvera/wootctl/internal/api"
 )
 
 // reports wraps the read-only /api/v2 analytics endpoints plus v1 reporting_events. Every
@@ -94,8 +94,8 @@ func reportsOverviewCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "overview",
 		Short: "Time-series statistics for a metric (account/agent/inbox/label/team)",
-		Example: `  cwctl reports overview --metric conversations_count --type account --since 2026-06-01 --until 2026-07-01
-  cwctl reports overview --metric avg_first_response_time --type inbox --id 3 --since 2026-06-01`,
+		Example: `  wootctl reports overview --metric conversations_count --type account --since 2026-06-01 --until 2026-07-01
+  wootctl reports overview --metric avg_first_response_time --type inbox --id 3 --since 2026-06-01`,
 		Args: cobra.NoArgs,
 	}
 	rng := rangeFlags(cmd)
@@ -123,7 +123,7 @@ func reportsSummaryCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "summary",
 		Short:   "Aggregate statistics for a range (conversations, response times, resolutions)",
-		Example: "  cwctl reports summary --since 2026-06-01 --until 2026-07-01",
+		Example: "  wootctl reports summary --since 2026-06-01 --until 2026-07-01",
 		Args:    cobra.NoArgs,
 	}
 	rng := rangeFlags(cmd)
@@ -147,7 +147,7 @@ func reportsAccountConversationsCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "account-conversations",
 		Short:   "Account-level open/unattended conversation metrics",
-		Example: "  cwctl reports account-conversations",
+		Example: "  wootctl reports account-conversations",
 		Args:    cobra.NoArgs,
 		RunE: runE(d, false, nil, func(cmd *cobra.Command, c *api.Client, _ []string) (json.RawMessage, error) {
 			q := url.Values{"type": {"account"}}
@@ -161,7 +161,7 @@ func reportsAgentConversationsCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "agent-conversations",
 		Short:   "Per-agent conversation metrics (all agents, or one with --user-id)",
-		Example: "  cwctl reports agent-conversations --user-id 7",
+		Example: "  wootctl reports agent-conversations --user-id 7",
 		Args:    cobra.NoArgs,
 		RunE: runE(d, false, nil, func(cmd *cobra.Command, c *api.Client, _ []string) (json.RawMessage, error) {
 			q := url.Values{"type": {"agent"}}
@@ -181,7 +181,7 @@ func reportsSimpleCmd(use, sub, short string, cols []string) func(d *deps) *cobr
 		cmd := &cobra.Command{
 			Use:     use,
 			Short:   short,
-			Example: "  cwctl reports " + use + " --since 2026-06-01 --until 2026-07-01",
+			Example: "  wootctl reports " + use + " --since 2026-06-01 --until 2026-07-01",
 			Args:    cobra.NoArgs,
 		}
 		rng := rangeFlags(cmd)
@@ -201,7 +201,7 @@ func reportsInboxLabelMatrixCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "inbox-label-matrix",
 		Short:   "Conversation counts as an inbox × label matrix",
-		Example: "  cwctl reports inbox-label-matrix --since 2026-06-01 --inbox-ids 1,3",
+		Example: "  wootctl reports inbox-label-matrix --since 2026-06-01 --inbox-ids 1,3",
 		Args:    cobra.NoArgs,
 	}
 	rng := rangeFlags(cmd)
@@ -228,7 +228,7 @@ func reportsOutgoingMessagesCountCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "outgoing-messages-count",
 		Short:   "Outgoing message counts grouped by day/week/month/year",
-		Example: "  cwctl reports outgoing-messages-count --group-by day --since 2026-06-01",
+		Example: "  wootctl reports outgoing-messages-count --group-by day --since 2026-06-01",
 		Args:    cobra.NoArgs,
 	}
 	rng := rangeFlags(cmd)
@@ -252,7 +252,7 @@ func reportsSummaryReportCmd(use, kind string) func(d *deps) *cobra.Command {
 		cmd := &cobra.Command{
 			Use:     use,
 			Short:   "Summary report grouped by " + kind,
-			Example: "  cwctl reports " + use + " --since 2026-06-01 --until 2026-07-01",
+			Example: "  wootctl reports " + use + " --since 2026-06-01 --until 2026-07-01",
 			Args:    cobra.NoArgs,
 		}
 		rng := rangeFlags(cmd)
@@ -276,7 +276,7 @@ func reportsEventsCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "events",
 		Short:   "List account reporting events (first response, resolutions, …)",
-		Example: "  cwctl reports events --name first_response --since 2026-06-01",
+		Example: "  wootctl reports events --name first_response --since 2026-06-01",
 		Args:    cobra.NoArgs,
 	}
 	rng := rangeFlags(cmd)

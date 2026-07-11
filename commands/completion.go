@@ -14,9 +14,9 @@ func init() {
 			DisableFlagsInUseLine: true,
 			ValidArgs:             []string{"bash", "zsh", "fish", "powershell"},
 			Args:                  cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
-			Example: `  cwctl completion zsh > "${fpath[1]}/_cwctl"
-  cwctl completion bash > /etc/bash_completion.d/cwctl
-  cwctl completion fish > ~/.config/fish/completions/cwctl.fish`,
+			Example: `  wootctl completion zsh > "${fpath[1]}/_wootctl"
+  wootctl completion bash > /etc/bash_completion.d/wootctl
+  wootctl completion fish > ~/.config/fish/completions/wootctl.fish`,
 			RunE: func(cmd *cobra.Command, args []string) error {
 				root := cmd.Root()
 				switch args[0] {

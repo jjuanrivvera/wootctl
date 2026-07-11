@@ -6,7 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jjuanrivvera/cwctl/internal/api"
+	"github.com/jjuanrivvera/wootctl/internal/api"
 )
 
 // profile wraps the account-independent /api/v1/profile pair (whoami + self-update).
@@ -29,7 +29,7 @@ func profileGetCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "get",
 		Short:   "Get your own profile (the token's identity)",
-		Example: "  cwctl profile get -o json",
+		Example: "  wootctl profile get -o json",
 		Args:    cobra.NoArgs,
 		RunE: runE(d, false, []string{"id", "name", "email", "role"}, func(cmd *cobra.Command, c *api.Client, _ []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -43,8 +43,8 @@ func profileUpdateCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "update",
 		Short: "Update your own profile (name, signature, password, …)",
-		Example: `  cwctl profile update --display-name "Juan R."
-  cwctl profile update --message-signature "— Juan, Soporte"`,
+		Example: `  wootctl profile update --display-name "Juan R."
+  wootctl profile update --message-signature "— Juan, Soporte"`,
 		Args: cobra.NoArgs,
 	}
 	collect := registerBodyFlags(cmd, []field{

@@ -1,14 +1,14 @@
 # AI agents
 
-cwctl is built to be driven by agents — safely.
+wootctl is built to be driven by agents — safely.
 
 ## MCP server
 
 ```bash
-cwctl mcp claude enable     # Claude Desktop
-cwctl mcp cursor enable     # Cursor
-cwctl mcp vscode enable     # VS Code
-cwctl mcp start             # stdio server for anything else
+wootctl mcp claude enable     # Claude Desktop
+wootctl mcp cursor enable     # Cursor
+wootctl mcp vscode enable     # VS Code
+wootctl mcp start             # stdio server for anything else
 ```
 
 Every resource command becomes an MCP tool (`cw_conversations_list`,
@@ -27,10 +27,10 @@ For agents that run shell commands (Claude Code, Codex, OpenCode), generate
 guardrails from the live command tree:
 
 ```bash
-cwctl agent guard --host claude-code --write   # .claude/hooks + settings fragment
-cwctl agent guard --host codex --out ~/.codex/config.toml
-cwctl agent guard --host opencode
-cwctl agent guard --host claude-code --all-writes   # block writes too, not just deletes
+wootctl agent guard --host claude-code --write   # .claude/hooks + settings fragment
+wootctl agent guard --host codex --out ~/.codex/config.toml
+wootctl agent guard --host opencode
+wootctl agent guard --host claude-code --all-writes   # block writes too, not just deletes
 ```
 
 What the claude-code guard enforces:
@@ -38,15 +38,15 @@ What the claude-code guard enforces:
 - **Hard-blocks irreversible operations** — every `delete`, `contacts merge`,
   `remove-members`, `delete-hook` — under their canonical paths AND every cobra alias
   path (`label delete`, `msg delete`, …).
-- **Gates the raw hatch by METHOD**: `cwctl api GET …` passes, `POST/PUT/PATCH/DELETE`
-  are denied, case-insensitively, even path-invoked (`./bin/cwctl`).
+- **Gates the raw hatch by METHOD**: `wootctl api GET …` passes, `POST/PUT/PATCH/DELETE`
+  are denied, case-insensitively, even path-invoked (`./bin/wootctl`).
 - **Defeats obfuscation**: quote-splitting (`de""lete`), backslashes, newline
   continuations, command chaining (`;`, `|`, `&&`), `env`-prefixed invocations.
 - **Denies `alias set`** so an agent cannot mint a shorthand for a blocked command.
 
-Known limits (by design, documented): variable indirection (`a=delete; cwctl labels $a`)
+Known limits (by design, documented): variable indirection (`a=delete; wootctl labels $a`)
 and shell aliases are not defeated — MCP-only operation is the hard guarantee, the
 Bash hook is defense in depth. A line that merely quotes a blocked command
-(`rg "cwctl labels delete"`) is denied; that false positive is the safe direction.
+(`rg "wootctl labels delete"`) is denied; that false positive is the safe direction.
 
-Regenerate the guard after upgrading cwctl so new commands are covered.
+Regenerate the guard after upgrading wootctl so new commands are covered.

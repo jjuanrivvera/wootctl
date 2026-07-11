@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jjuanrivvera/cwctl/internal/api"
+	"github.com/jjuanrivvera/wootctl/internal/api"
 )
 
 // messages are conversation-scoped (…/conversations/{id}/messages), so every verb takes
@@ -39,8 +39,8 @@ func messagesListCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "list <conversation-id>",
 		Short: "List messages in a conversation",
-		Example: `  cwctl messages list 42
-  cwctl messages list 42 --before 105023 -o json`,
+		Example: `  wootctl messages list 42
+  wootctl messages list 42 --before 105023 -o json`,
 		Args: cobra.ExactArgs(1),
 		RunE: runListE(d, false, []string{"id", "content", "message_type", "created_at"}, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			query := url.Values{}
@@ -68,9 +68,9 @@ func messagesCreateCmd(d *deps) *cobra.Command {
 		Long: `Send an outgoing message, a private note (--private), or an incoming message
 (--message-type incoming, API channels). Attach files with repeatable --attachment
 (switches to a multipart upload).`,
-		Example: `  cwctl messages create 42 --content "On it — checking now."
-  cwctl messages create 42 --content "internal note" --private
-  cwctl messages create 42 --content "see attached" --attachment ./invoice.pdf`,
+		Example: `  wootctl messages create 42 --content "On it — checking now."
+  wootctl messages create 42 --content "internal note" --private
+  wootctl messages create 42 --content "see attached" --attachment ./invoice.pdf`,
 		Args: cobra.ExactArgs(1),
 	}
 	collect := registerBodyFlags(cmd, []field{
@@ -129,7 +129,7 @@ func messagesDeleteCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "delete <conversation-id> <message-id>",
 		Short:   "Delete a message from a conversation",
-		Example: "  cwctl messages delete 42 105023",
+		Example: "  wootctl messages delete 42 105023",
 		Args:    cobra.ExactArgs(2),
 		RunE: runE(d, false, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			err := c.Send(cmd.Context(), http.MethodDelete, messagesPath(c, args[0])+"/"+url.PathEscape(args[1]), nil, nil, nil)

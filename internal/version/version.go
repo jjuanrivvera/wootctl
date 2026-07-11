@@ -10,9 +10,9 @@ var (
 	Date    = "unknown"
 )
 
-// String renders a one-line human summary, e.g. "cwctl v1.2.3 (abc1234, 2026-06-29)".
+// String renders a one-line human summary, e.g. "wootctl v1.2.3 (abc1234, 2026-06-29)".
 func String() string {
-	return fmt.Sprintf("cwctl %s (%s, %s)", Version, Commit, Date)
+	return fmt.Sprintf("wootctl %s (%s, %s)", Version, Commit, Date)
 }
 
 // Info is the machine-readable form returned by `version --json`.

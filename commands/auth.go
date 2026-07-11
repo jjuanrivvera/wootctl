@@ -9,9 +9,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jjuanrivvera/cwctl/internal/api"
-	"github.com/jjuanrivvera/cwctl/internal/auth"
-	"github.com/jjuanrivvera/cwctl/internal/config"
+	"github.com/jjuanrivvera/wootctl/internal/api"
+	"github.com/jjuanrivvera/wootctl/internal/auth"
+	"github.com/jjuanrivvera/wootctl/internal/config"
 )
 
 // chatwootProfile is the GET /api/v1/profile response — the whoami endpoint every login
@@ -41,7 +41,7 @@ A profile can hold two token kinds:
   user      the api_access_token from your Chatwoot profile page — drives the
             application API (conversations, contacts, reports, …)
   platform  a platform app token (self-hosted; from a super-admin platform app) —
-            drives the 'cwctl platform …' commands`,
+            drives the 'wootctl platform …' commands`,
 		}
 		authCmd.AddCommand(authLoginCmd(d), authLogoutCmd(d), authStatusCmd(d))
 		return authCmd
@@ -58,10 +58,10 @@ func authLoginCmd(d *deps) *cobra.Command {
 pick the account to scope commands to, and save everything under the active profile.
 
 Find the token in Chatwoot: Profile Settings → Access Token.`,
-		Example: `  cwctl auth login                                  # interactive (hidden token input)
-  cwctl auth login --base-url https://app.chatwoot.com --api-key <token>
-  cwctl --profile staging auth login                # save a second instance
-  cwctl auth login --platform-token <token>         # also store a platform app token`,
+		Example: `  wootctl auth login                                  # interactive (hidden token input)
+  wootctl auth login --base-url https://app.chatwoot.com --api-key <token>
+  wootctl --profile staging auth login                # save a second instance
+  wootctl auth login --platform-token <token>         # also store a platform app token`,
 		Args: cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			cfg, err := d.loadConfig()
@@ -136,7 +136,7 @@ Find the token in Chatwoot: Profile Settings → Access Token.`,
 		},
 	}
 	cmd.Flags().StringVar(&apiKey, "api-key", "", "api_access_token (omit to be prompted with hidden input)")
-	cmd.Flags().StringVar(&platformToken, "platform-token", "", "platform app token for `cwctl platform …` (optional)")
+	cmd.Flags().StringVar(&platformToken, "platform-token", "", "platform app token for `wootctl platform …` (optional)")
 	cmd.Flags().StringVar(&baseURL, "url", "", "instance base URL (alias of --base-url)")
 	cmd.Flags().StringVar(&accountID, "account", "", "account id to scope commands to (alias of --account-id)")
 	cmd.Flags().BoolVar(&noVerify, "no-verify", false, "skip the /api/v1/profile verification call")
@@ -188,8 +188,8 @@ func authLogoutCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "logout",
 		Short: "Remove stored tokens for the active profile",
-		Example: `  cwctl auth logout                  # remove user + platform tokens
-  cwctl auth logout --platform-only  # keep the user token`,
+		Example: `  wootctl auth logout                  # remove user + platform tokens
+  wootctl auth logout --platform-only  # keep the user token`,
 		Args: cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			cfg, err := d.loadConfig()
@@ -215,11 +215,11 @@ func authStatusCmd(d *deps) *cobra.Command {
 		Use:     "status",
 		Aliases: []string{"whoami"},
 		Short:   "Show the active profile, base URL, identity, and token validity",
-		Example: `  cwctl auth status
-  cwctl auth whoami -o json`,
+		Example: `  wootctl auth status
+  wootctl auth whoami -o json`,
 		Args: cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			// A real check: missing/invalid token exits non-zero so `cwctl auth status && …`
+			// A real check: missing/invalid token exits non-zero so `wootctl auth status && …`
 			// gates correctly, while still printing why.
 			c, cfg, err := d.getAPIClient(true)
 			if err != nil {

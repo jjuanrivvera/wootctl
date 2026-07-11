@@ -1,14 +1,14 @@
-# .goreleaser.yaml — cwctl release pipeline (cliwright GOAL.md §5).
-# Replace cwctl / jjuanrivvera / cwctl. Run `goreleaser check` in CI (not only at tag).
+# .goreleaser.yaml — wootctl release pipeline (cliwright GOAL.md §5).
+# Replace wootctl / jjuanrivvera / wootctl. Run `goreleaser check` in CI (not only at tag).
 version: 2
 
 before:
   hooks: [go mod tidy, ./scripts/completions.sh]
 
 builds:
-  - id: cwctl
-    main: ./cmd/cwctl
-    binary: cwctl
+  - id: wootctl
+    main: ./cmd/wootctl
+    binary: wootctl
     env: [CGO_ENABLED=0]
     goos: [linux, darwin, windows]
     goarch: [amd64, arm64]
@@ -32,54 +32,54 @@ checksum: { name_template: checksums.txt }
 # CI snapshot runs pass --skip=docker (no registry auth on PRs); the real image is built and
 # pushed to GHCR at tag time (the release workflow logs in to ghcr.io first).
 dockers:
-  - id: cwctl
-    ids: [cwctl]
+  - id: wootctl
+    ids: [wootctl]
     goos: linux
     goarch: amd64
     dockerfile: Dockerfile.goreleaser
     image_templates:
-      - "ghcr.io/jjuanrivvera/cwctl:{{ .Version }}"
-      - "ghcr.io/jjuanrivvera/cwctl:v{{ .Major }}"
-      - "ghcr.io/jjuanrivvera/cwctl:latest"
+      - "ghcr.io/jjuanrivvera/wootctl:{{ .Version }}"
+      - "ghcr.io/jjuanrivvera/wootctl:v{{ .Major }}"
+      - "ghcr.io/jjuanrivvera/wootctl:latest"
     build_flag_templates:
-      - "--label=org.opencontainers.image.title=cwctl"
+      - "--label=org.opencontainers.image.title=wootctl"
       - "--label=org.opencontainers.image.description=A fast, scriptable CLI for the full Chatwoot API"
-      - "--label=org.opencontainers.image.source=https://github.com/jjuanrivvera/cwctl"
+      - "--label=org.opencontainers.image.source=https://github.com/jjuanrivvera/wootctl"
       - "--label=org.opencontainers.image.version={{ .Version }}"
       - "--label=org.opencontainers.image.licenses=MIT"
 
 # An explicit release block — without it, `goreleaser check` errors on a fresh repo
 # ("scm releases: no remote configured to list refs from").
 release:
-  github: { owner: jjuanrivvera, name: cwctl }
+  github: { owner: jjuanrivvera, name: wootctl }
   prerelease: auto
 
-# Homebrew: use homebrew_casks (NOT the deprecated brews:). The cask is cwctl-cli,
-# but the binary inside the archive is cwctl — so `binaries:` (plural list) is required,
+# Homebrew: use homebrew_casks (NOT the deprecated brews:). The cask is wootctl-cli,
+# but the binary inside the archive is wootctl — so `binaries:` (plural list) is required,
 # and an unsigned arm64 binary is SIGKILL'd by Gatekeeper without the xattr postflight.
 homebrew_casks:
-  - name: cwctl-cli
-    binaries: [cwctl]
+  - name: wootctl-cli
+    binaries: [wootctl]
     # token required to push the cask cross-repo: the default GITHUB_TOKEN is scoped to this
     # repo only and cannot write to the tap.
-    repository: { owner: jjuanrivvera, name: homebrew-cwctl, token: "{{ .Env.HOMEBREW_TAP_TOKEN }}" }
-    homepage: https://github.com/jjuanrivvera/cwctl
+    repository: { owner: jjuanrivvera, name: homebrew-wootctl, token: "{{ .Env.HOMEBREW_TAP_TOKEN }}" }
+    homepage: https://github.com/jjuanrivvera/wootctl
     hooks:
       post:
         install: |
-          system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/cwctl"]
+          system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/wootctl"]
 
 scoops:
-  - repository: { owner: jjuanrivvera, name: scoop-cwctl, token: "{{ .Env.HOMEBREW_TAP_TOKEN }}" }   # bucket repo must already exist; cross-repo token
+  - repository: { owner: jjuanrivvera, name: scoop-wootctl, token: "{{ .Env.HOMEBREW_TAP_TOKEN }}" }   # bucket repo must already exist; cross-repo token
 
 nfpms:
   - formats: [deb, rpm, apk]
     bindir: /usr/bin
     maintainer: jjuanrivvera
     contents:
-      - { src: completions/cwctl.bash, dst: /usr/share/bash-completion/completions/cwctl }
-      - { src: completions/cwctl.zsh,  dst: /usr/share/zsh/site-functions/_cwctl }
-      - { src: completions/cwctl.fish, dst: /usr/share/fish/vendor_completions.d/cwctl.fish }
+      - { src: completions/wootctl.bash, dst: /usr/share/bash-completion/completions/wootctl }
+      - { src: completions/wootctl.zsh,  dst: /usr/share/zsh/site-functions/_wootctl }
+      - { src: completions/wootctl.fish, dst: /usr/share/fish/vendor_completions.d/wootctl.fish }
 
 sboms:
   - artifacts: archive          # syft SBOMs

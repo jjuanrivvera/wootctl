@@ -11,7 +11,7 @@ import (
 )
 
 // Service is the keyring service name under which tokens are stored, keyed by profile.
-const Service = "cwctl"
+const Service = "wootctl"
 
 // ErrNotFound is returned when no token is stored for a profile.
 var ErrNotFound = errors.New("no token stored for this profile")

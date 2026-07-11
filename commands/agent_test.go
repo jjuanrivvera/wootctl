@@ -143,12 +143,12 @@ func TestGuardRenderers(t *testing.T) {
 
 	claude, err := renderClaudeCode(cls)
 	require.NoError(t, err)
-	assert.Contains(t, claude, `Bash(cwctl labels delete:*)`)
-	assert.Contains(t, claude, `Bash(cwctl label delete:*)`, "alias path present in deny rules")
-	assert.Contains(t, claude, `Bash(cwctl api DELETE:*)`)
-	assert.Contains(t, claude, `Bash(cwctl alias set:*)`)
-	assert.Contains(t, claude, "mcp__cwctl__cw_labels_delete")
-	assert.Contains(t, claude, "mcp__cwctl__cw_agent-bots_delete", "hyphen preserved in exact tool name")
+	assert.Contains(t, claude, `Bash(wootctl labels delete:*)`)
+	assert.Contains(t, claude, `Bash(wootctl label delete:*)`, "alias path present in deny rules")
+	assert.Contains(t, claude, `Bash(wootctl api DELETE:*)`)
+	assert.Contains(t, claude, `Bash(wootctl alias set:*)`)
+	assert.Contains(t, claude, "mcp__wootctl__cw_labels_delete")
+	assert.Contains(t, claude, "mcp__wootctl__cw_agent-bots_delete", "hyphen preserved in exact tool name")
 	assert.Contains(t, claude, "PreToolUse")
 	assert.Contains(t, claude, "blocked_cmds=(")
 
@@ -161,6 +161,6 @@ func TestGuardRenderers(t *testing.T) {
 	require.NoError(t, err)
 	assert.Contains(t, oc, `"permission"`)
 	assert.Contains(t, oc, `"bash"`)
-	assert.Contains(t, oc, `"cwctl labels delete*": "deny"`)
-	assert.Contains(t, oc, `"cwctl conversations list*": "allow"`)
+	assert.Contains(t, oc, `"wootctl labels delete*": "deny"`)
+	assert.Contains(t, oc, `"wootctl conversations list*": "allow"`)
 }

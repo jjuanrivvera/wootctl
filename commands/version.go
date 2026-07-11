@@ -10,7 +10,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jjuanrivvera/cwctl/internal/version"
+	"github.com/jjuanrivvera/wootctl/internal/version"
 )
 
 func init() {
@@ -20,9 +20,9 @@ func init() {
 			Use:   "version",
 			Short: "Print version, commit, and build date",
 			Long:  "Print build metadata. With --check, compare against the latest GitHub release.",
-			Example: `  cwctl version
-  cwctl version --json
-  cwctl version --check`,
+			Example: `  wootctl version
+  wootctl version --json
+  wootctl version --check`,
 			Args: cobra.NoArgs,
 			RunE: func(cmd *cobra.Command, _ []string) error {
 				info := version.Get()
@@ -44,7 +44,7 @@ func init() {
 	})
 }
 
-const latestReleaseURL = "https://api.github.com/repos/jjuanrivvera/cwctl/releases/latest"
+const latestReleaseURL = "https://api.github.com/repos/jjuanrivvera/wootctl/releases/latest"
 
 // reportLatest fetches the newest published release tag and tells the user whether they are
 // up to date. It is best-effort: a network failure is reported, not fatal.

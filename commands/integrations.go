@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jjuanrivvera/cwctl/internal/api"
+	"github.com/jjuanrivvera/wootctl/internal/api"
 )
 
 // integrations pair a read-only app catalog (GET integrations/apps) with hook CRUD under
@@ -34,7 +34,7 @@ func integrationsAppsCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "apps",
 		Short:   "List available integration apps and their status",
-		Example: "  cwctl integrations apps -o json",
+		Example: "  wootctl integrations apps -o json",
 		Args:    cobra.NoArgs,
 		RunE: runListE(d, false, []string{"id", "name", "enabled"}, func(cmd *cobra.Command, c *api.Client, _ []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -48,7 +48,7 @@ func integrationsCreateHookCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "create-hook",
 		Short:   "Create an integration hook",
-		Example: `  cwctl integrations create-hook --app-id dialogflow --settings '{"project_id":"x","credentials":{}}' --inbox-id 3`,
+		Example: `  wootctl integrations create-hook --app-id dialogflow --settings '{"project_id":"x","credentials":{}}' --inbox-id 3`,
 		Args:    cobra.NoArgs,
 	}
 	collect := registerBodyFlags(cmd, []field{
@@ -72,7 +72,7 @@ func integrationsUpdateHookCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "update-hook <hook-id>",
 		Short:   "Update an integration hook's settings",
-		Example: `  cwctl integrations update-hook 5 --settings '{"project_id":"y"}'`,
+		Example: `  wootctl integrations update-hook 5 --settings '{"project_id":"y"}'`,
 		Args:    cobra.ExactArgs(1),
 	}
 	collect := registerBodyFlags(cmd, []field{
@@ -95,7 +95,7 @@ func integrationsDeleteHookCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "delete-hook <hook-id>",
 		Short:   "Delete an integration hook",
-		Example: "  cwctl integrations delete-hook 5",
+		Example: "  wootctl integrations delete-hook 5",
 		Args:    cobra.ExactArgs(1),
 		RunE: runE(d, false, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			if err := c.Send(cmd.Context(), http.MethodDelete, c.AccountPath("integrations/hooks/"+url.PathEscape(args[0])), nil, nil, nil); err != nil {

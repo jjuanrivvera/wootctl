@@ -10,7 +10,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jjuanrivvera/cwctl/internal/api"
+	"github.com/jjuanrivvera/wootctl/internal/api"
 )
 
 // cmdKind classifies a command for MCP/agent-guard annotations.
@@ -177,7 +177,7 @@ func buildListCmd[T any](d *deps, spec resourceSpec[T]) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "list",
 		Short: short,
-		Example: fmt.Sprintf("  cwctl %s list\n  cwctl %s list --all -o json\n  cwctl %s list --filter status=active",
+		Example: fmt.Sprintf("  wootctl %s list\n  wootctl %s list --all -o json\n  wootctl %s list --filter status=active",
 			spec.Use, spec.Use, spec.Use),
 		Args: cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
@@ -228,7 +228,7 @@ func buildGetCmd[T any](d *deps, spec resourceSpec[T]) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "get <" + spec.idArg() + ">",
 		Short:   "Get a single " + singular(spec.Use),
-		Example: fmt.Sprintf("  cwctl %s get 42 -o yaml", spec.Use),
+		Example: fmt.Sprintf("  wootctl %s get 42 -o yaml", spec.Use),
 		Args:    cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, _, err := d.getAPIClient(!spec.NoAuth)
@@ -256,7 +256,7 @@ func buildCreateCmd[T any](d *deps, spec resourceSpec[T]) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "create",
 		Short:   short,
-		Example: fmt.Sprintf("  cwctl %s create --data '{...}'\n  cwctl %s create -d @payload.json", spec.Use, spec.Use),
+		Example: fmt.Sprintf("  wootctl %s create --data '{...}'\n  wootctl %s create -d @payload.json", spec.Use, spec.Use),
 		Args:    cobra.NoArgs,
 	}
 	collect := registerBodyFlags(cmd, spec.CreateFields)
@@ -299,7 +299,7 @@ func buildUpdateCmd[T any](d *deps, spec resourceSpec[T]) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "update <" + spec.idArg() + ">",
 		Short:   short,
-		Example: fmt.Sprintf("  cwctl %s update 42 --data '{...}'", spec.Use),
+		Example: fmt.Sprintf("  wootctl %s update 42 --data '{...}'", spec.Use),
 		Args:    cobra.ExactArgs(1),
 	}
 	collect := registerBodyFlags(cmd, fields)
@@ -328,7 +328,7 @@ func buildDeleteCmd[T any](d *deps, spec resourceSpec[T]) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "delete <" + spec.idArg() + ">",
 		Short:   "Delete a " + singular(spec.Use),
-		Example: fmt.Sprintf("  cwctl %s delete 42 --dry-run\n  cwctl %s delete 42", spec.Use, spec.Use),
+		Example: fmt.Sprintf("  wootctl %s delete 42 --dry-run\n  wootctl %s delete 42", spec.Use, spec.Use),
 		Args:    cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, _, err := d.getAPIClient(!spec.NoAuth)

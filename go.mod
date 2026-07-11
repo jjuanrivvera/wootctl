@@ -1,4 +1,4 @@
-module github.com/jjuanrivvera/cwctl
+module github.com/jjuanrivvera/wootctl
 
 go 1.25.5
 

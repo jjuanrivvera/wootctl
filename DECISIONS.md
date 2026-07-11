@@ -20,9 +20,9 @@ never silently re-decides.
    concepts: an "account" is a path axis (`account_id`) and a resource; "instance" would read as
    base-url-only. A profile bundles base_url + account_id + tokens.
 5. **Auth** → `api_access_token` header; per-profile **user token** in the OS keyring
-   (service `cwctl`, user `<profile>`), optional **platform app token** as a second keyring entry
+   (service `wootctl`, user `<profile>`), optional **platform app token** as a second keyring entry
    (`<profile>/platform`) required only by `platform *` commands (403-style hint when absent).
-   Agent-bot tokens are accepted via `CWCTL_API_KEY` for ad-hoc use but not stored as a class.
+   Agent-bot tokens are accepted via `WOOTCTL_API_KEY` for ad-hoc use but not stored as a class.
 6. **Public (client) API** → unauthenticated by design (swagger `security: []`); `client *`
    commands take `--inbox <identifier>` / `--contact <source-id>` and skip the token entirely.
 7. **Pagination** → `page=` query param; Chatwoot serves fixed 25/page on paginated lists
@@ -52,8 +52,8 @@ never silently re-decides.
 15. **Command grouping** → resources ordered application → platform → client, alphabetical
     within group; `platform`/`client` are nested command groups (manifest names carry the space;
     spec-check word-splits resource names).
-16. **Identity/distribution** → binary `cwctl`, module `github.com/jjuanrivvera/cwctl`, MIT,
-    tap `jjuanrivvera/homebrew-cwctl`, scoop bucket `jjuanrivvera/scoop-cwctl`;
+16. **Identity/distribution** → binary `wootctl`, module `github.com/jjuanrivvera/wootctl`, MIT,
+    tap `jjuanrivvera/homebrew-wootctl`, scoop bucket `jjuanrivvera/scoop-wootctl`;
     `distribution_scope=+release` authorized by Juan 2026-07-10 (build → repo → push → v0.1.0).
 17. **Why a new CLI over the official `chatwoot`** → official CLI lacks multi-profile (Juan's PR
     open 3+ weeks with no review while newer PRs merged), lacks keyring fallback for headless
@@ -61,12 +61,12 @@ never silently re-decides.
     Recorded here, kept out of public docs beyond an honest comparison.
 18. **Keyring fallback** → `zalando/go-keyring` first; when no OS keyring is available (headless
     Linux/VPS), fall back to an AES-256-GCM encrypted file under the config dir keyed by
-    `CWCTL_KEYRING_PASSWORD` (scrypt-derived), mirroring the fleet's file-keyring pattern;
-    `CWCTL_API_KEY` env always wins for CI.
+    `WOOTCTL_KEYRING_PASSWORD` (scrypt-derived), mirroring the fleet's file-keyring pattern;
+    `WOOTCTL_API_KEY` env always wins for CI.
 19. **Records decode as raw JSON** (`api.Rec = json.RawMessage`), not typed structs → Chatwoot
     adds response fields every release; raw decode means `-o json`/`-o yaml` never silently drop
     fields, and the renderer's JSON normalization drives tables identically. Typed structs exist
-    only where cwctl itself consumes fields (whoami, list meta). Flexible types (ID/FlexInt/
+    only where wootctl itself consumes fields (whoami, list meta). Flexible types (ID/FlexInt/
     FlexTime/FlexBool) guard those typed paths.
 20. **--limit is client-side** → Chatwoot fixes page size server-side (no per_page param), so
     --limit truncates after fetch; --page selects the server page. Documented in the flag help.

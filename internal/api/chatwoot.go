@@ -5,7 +5,7 @@ import "encoding/json"
 // Rec is the record type every resource handle carries. Chatwoot is a fast-moving
 // self-hosted API that adds response fields every release; decoding into raw JSON means
 // -o json/-o yaml never silently drop fields a typed struct didn't know about
-// (DECISIONS.md #19). Typed structs are used only where cwctl itself consumes fields.
+// (DECISIONS.md #19). Typed structs are used only where wootctl itself consumes fields.
 type Rec = json.RawMessage
 
 // NormalizeList exposes the envelope normalization to irregular commands that fetch

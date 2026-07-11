@@ -111,16 +111,16 @@ func (c *Client) tokenFor(path string) (string, bool) {
 func (c *Client) checkCreds(path string) error {
 	p := strings.TrimLeft(path, "/")
 	if strings.Contains(p, "/accounts//") {
-		return fmt.Errorf("account id missing — run `cwctl auth login` (it captures the account id), `cwctl config set account_id <id>`, or pass --account-id")
+		return fmt.Errorf("account id missing — run `wootctl auth login` (it captures the account id), `wootctl config set account_id <id>`, or pass --account-id")
 	}
 	tok, need := c.tokenFor(p)
 	if !need || tok != "" {
 		return nil
 	}
 	if strings.HasPrefix(p, "platform/") {
-		return fmt.Errorf("platform API needs a platform app token — run `cwctl auth login --platform-token <token>` or set CWCTL_PLATFORM_TOKEN")
+		return fmt.Errorf("platform API needs a platform app token — run `wootctl auth login --platform-token <token>` or set WOOTCTL_PLATFORM_TOKEN")
 	}
-	return fmt.Errorf("no API token — run `cwctl auth login` or set CWCTL_API_KEY")
+	return fmt.Errorf("no API token — run `wootctl auth login` or set WOOTCTL_API_KEY")
 }
 
 // buildURL joins the base URL, path, and query params deterministically (sorted keys).

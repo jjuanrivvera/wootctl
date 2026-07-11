@@ -1,20 +1,20 @@
 #!/bin/sh
-# cwctl installer for macOS and Linux.
+# wootctl installer for macOS and Linux.
 #
-#   curl -fsSL https://raw.githubusercontent.com/jjuanrivvera/cwctl/main/install.sh | sh
+#   curl -fsSL https://raw.githubusercontent.com/jjuanrivvera/wootctl/main/install.sh | sh
 #
 # Downloads the release archive matching your OS/arch, verifies its SHA-256 against the
 # release checksums.txt, and installs the binary. Configure via env vars:
-#   CWCTL_VERSION=v1.2.3        pin a version (default: the latest release)
+#   WOOTCTL_VERSION=v1.2.3        pin a version (default: the latest release)
 #   INSTALL_DIR=/usr/local/bin  install location (default; falls back to ~/.local/bin)
 #
 # Windows: use Scoop (see the README). This installer is for macOS and Linux.
 set -eu
 
 # --- per-tool configuration (the only lines cliwright templates per CLI) ---
-REPO="jjuanrivvera/cwctl"
-BINARY="cwctl"
-VERSION="${CWCTL_VERSION:-}"
+REPO="jjuanrivvera/wootctl"
+BINARY="wootctl"
+VERSION="${WOOTCTL_VERSION:-}"
 
 die() { printf 'error: %s\n' "$1" >&2; exit 1; }
 
@@ -41,7 +41,7 @@ esac
 if [ -z "$VERSION" ]; then
   VERSION="$(curl -fsSL "https://api.github.com/repos/${REPO}/releases/latest" \
     | grep '"tag_name"' | head -1 | sed -E 's/.*"tag_name" *: *"([^"]+)".*/\1/')"
-  [ -n "$VERSION" ] || die "could not determine the latest release; set CWCTL_VERSION"
+  [ -n "$VERSION" ] || die "could not determine the latest release; set WOOTCTL_VERSION"
 fi
 
 base="https://github.com/${REPO}/releases/download/${VERSION}"

@@ -1,9 +1,9 @@
 package commands
 
-import "github.com/jjuanrivvera/cwctl/internal/api"
+import "github.com/jjuanrivvera/wootctl/internal/api"
 
 func init() {
-	// No "agent" alias: it would shadow the `cwctl agent` (guard) meta command.
+	// No "agent" alias: it would shadow the `wootctl agent` (guard) meta command.
 	registerResource("", resourceSpec[api.Rec]{
 		Use:     "agents",
 		Short:   "Manage the account's agents",

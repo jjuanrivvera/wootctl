@@ -9,7 +9,7 @@ import (
 	"github.com/google/shlex"
 	"github.com/spf13/cobra"
 
-	"github.com/jjuanrivvera/cwctl/internal/config"
+	"github.com/jjuanrivvera/wootctl/internal/config"
 )
 
 // ExpandAliases rewrites os.Args before cobra parses them: if the first argument names a
@@ -59,8 +59,8 @@ func init() {
 		setCmd := &cobra.Command{
 			Use:   "set <name> <expansion>",
 			Short: "Create or update an alias",
-			Example: `  cwctl alias set open "conversations list --status open"
-  cwctl alias set reply "messages create"`,
+			Example: `  wootctl alias set open "conversations list --status open"
+  wootctl alias set reply "messages create"`,
 			Args: cobra.MinimumNArgs(2),
 			RunE: func(cmd *cobra.Command, args []string) error {
 				name := args[0]

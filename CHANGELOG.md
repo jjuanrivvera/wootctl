@@ -29,12 +29,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **Beyond-the-API layer** (config-as-code + multi-instance):
-  - `cwctl backup --dir <dir>` dumps account config (labels, canned-responses,
+  - `wootctl backup --dir <dir>` dumps account config (labels, canned-responses,
     custom-attributes, custom-filters, automation-rules, teams, webhooks, agent-bots) to
     a git-friendly directory of YAML files, keeping only writable fields.
-  - `cwctl restore --dir <dir>` reconciles a backup into the account (create/update/skip;
+  - `wootctl restore --dir <dir>` reconciles a backup into the account (create/update/skip;
     `--prune` removes drift), matching by natural key with duplicate-detect-and-skip.
-  - `cwctl sync --to <profile>` promotes config between instances — the multi-instance
+  - `wootctl sync --to <profile>` promotes config between instances — the multi-instance
     payoff the single-instance official CLI can't offer.
   - `restore`/`sync` are classified destructive (they can `--prune`), so `agent guard`
     hard-blocks them; `backup` stays allowed. All three preview with `--dry-run`.
@@ -56,8 +56,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 
 - Upgrade `modelcontextprotocol/go-sdk` to v1.6.1, past GO-2026-4773 (cross-site tool
-  execution in the SDK's HTTP transport, reachable via `cwctl mcp stream`) and
-  GO-2026-5771 (DNS-rebinding protection default). stdio MCP (`cwctl mcp start`) was
+  execution in the SDK's HTTP transport, reachable via `wootctl mcp stream`) and
+  GO-2026-5771 (DNS-rebinding protection default). stdio MCP (`wootctl mcp start`) was
   unaffected.
 
 ### Fixed
@@ -73,9 +73,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   API (`/api/v1`, `/api/v2` reports), the platform API (`/platform/api/v1`), and the
   public client API (`/public/api/v1`), enforced by spec-check + spec-completeness
   gates against a manifest derived from Chatwoot's own OpenAPI spec.
-- Named profiles (instance + account + tokens) with `--profile` / `CWCTL_PROFILE`;
+- Named profiles (instance + account + tokens) with `--profile` / `WOOTCTL_PROFILE`;
   tokens in the OS keyring with an AES-256-GCM encrypted-file fallback for headless
-  hosts (`CWCTL_KEYRING_PASSWORD`).
+  hosts (`WOOTCTL_KEYRING_PASSWORD`).
 - Output formats: table (TTY-colored), json, yaml, csv (formula-injection-safe), id;
   `--columns`, `--filter`, `--limit`, `--all` pagination, `--jq` (gojq).
 - `--dry-run` prints the equivalent curl with the token redacted; multipart uploads
@@ -85,13 +85,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   in-flight work.
 - Meta commands: `auth login/logout/status`, `config`, `init`, `doctor`, `completion`,
   `alias`, `api` (raw escape hatch), `version --check`.
-- AI agent surface: `cwctl mcp` (ophis MCP server, 125 annotated tools, secret flags
-  and setup commands excluded) and `cwctl agent guard` for claude-code / codex /
+- AI agent surface: `wootctl mcp` (ophis MCP server, 125 annotated tools, secret flags
+  and setup commands excluded) and `wootctl agent guard` for claude-code / codex /
   opencode with a hardened PreToolUse hook (alias-path enumeration, de-obfuscation,
   METHOD-gated raw api, strict no-jq fallback).
 
-[Unreleased]: https://github.com/jjuanrivvera/cwctl/compare/v0.2.0...HEAD
-[0.2.0]: https://github.com/jjuanrivvera/cwctl/compare/v0.1.2...v0.2.0
-[0.1.2]: https://github.com/jjuanrivvera/cwctl/compare/v0.1.1...v0.1.2
-[0.1.1]: https://github.com/jjuanrivvera/cwctl/compare/v0.1.0...v0.1.1
-[0.1.0]: https://github.com/jjuanrivvera/cwctl/releases/tag/v0.1.0
+[Unreleased]: https://github.com/jjuanrivvera/wootctl/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/jjuanrivvera/wootctl/compare/v0.1.2...v0.2.0
+[0.1.2]: https://github.com/jjuanrivvera/wootctl/compare/v0.1.1...v0.1.2
+[0.1.1]: https://github.com/jjuanrivvera/wootctl/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/jjuanrivvera/wootctl/releases/tag/v0.1.0

@@ -16,7 +16,7 @@ import (
 )
 
 // fileStore is the encrypted-file fallback used when no OS keyring is available. Tokens are
-// AES-256-GCM encrypted in a 0600 file. The encryption key comes from $CWCTL_KEYRING_PASSWORD
+// AES-256-GCM encrypted in a 0600 file. The encryption key comes from $WOOTCTL_KEYRING_PASSWORD
 // (scrypt-derived) when set; otherwise a host-bound key derived from hostname+uid. The
 // host-bound key is obfuscation-grade, NOT a security boundary — the OS keyring is the real
 // protection, and this fallback only exists so headless hosts still avoid plaintext tokens.
@@ -114,12 +114,12 @@ func (f *fileStore) Delete(profile string) error {
 // --- crypto ---
 
 func deriveKey() ([]byte, error) {
-	salt := []byte("cwctl-credentials-v1")
-	if pw := os.Getenv("CWCTL_KEYRING_PASSWORD"); pw != "" {
+	salt := []byte("wootctl-credentials-v1")
+	if pw := os.Getenv("WOOTCTL_KEYRING_PASSWORD"); pw != "" {
 		return scrypt.Key([]byte(pw), salt, 1<<15, 8, 1, 32)
 	}
 	host, _ := os.Hostname()
-	seed := fmt.Sprintf("cwctl-fallback|%s|%d", host, os.Getuid())
+	seed := fmt.Sprintf("wootctl-fallback|%s|%d", host, os.Getuid())
 	sum := sha256.Sum256(append(salt, seed...))
 	return sum[:], nil
 }
@@ -165,7 +165,7 @@ func decrypt(b64 string) (string, error) {
 	nonce, ct := data[:ns], data[ns:]
 	plain, err := aead.Open(nil, nonce, ct, nil)
 	if err != nil {
-		return "", fmt.Errorf("decrypt failed (wrong $CWCTL_KEYRING_PASSWORD or host changed): %w", err)
+		return "", fmt.Errorf("decrypt failed (wrong $WOOTCTL_KEYRING_PASSWORD or host changed): %w", err)
 	}
 	return string(plain), nil
 }

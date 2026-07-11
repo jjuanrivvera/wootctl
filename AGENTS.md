@@ -1,6 +1,6 @@
-# AGENTS.md — working in the cwctl repo
+# AGENTS.md — working in the wootctl repo
 
-`cwctl` is a command-line tool for the **Chatwoot API** (application + platform + public
+`wootctl` is a command-line tool for the **Chatwoot API** (application + platform + public
 client APIs), built to the cliwright standard (Go + Cobra + GoReleaser). This file orients
 an AI agent (or human) contributing.
 
@@ -24,7 +24,7 @@ or a documented behavior — not just `make check`.
 - `internal/{config,auth,output,version}` — named profiles + manual precedence (no Viper),
   keyring token storage (user + optional platform token, encrypted-file fallback for
   headless hosts), the table/json/yaml/csv renderer, build metadata.
-- `cmd/cwctl/main.go` — entry point: `signal.NotifyContext` (Ctrl-C cancels in-flight
+- `cmd/wootctl/main.go` — entry point: `signal.NotifyContext` (Ctrl-C cancels in-flight
   work) + alias expansion before cobra parses.
 
 ## Chatwoot specifics you must not re-derive

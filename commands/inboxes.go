@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jjuanrivvera/cwctl/internal/api"
+	"github.com/jjuanrivvera/wootctl/internal/api"
 )
 
 func init() {
@@ -46,7 +46,7 @@ func inboxAgentBotCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "agent-bot <inbox-id>",
 		Short:   "Show the agent bot attached to an inbox",
-		Example: "  cwctl inboxes agent-bot 3",
+		Example: "  wootctl inboxes agent-bot 3",
 		Args:    cobra.ExactArgs(1),
 		RunE: runE(d, false, []string{"id", "name", "description"}, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -61,7 +61,7 @@ func inboxSetAgentBotCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "set-agent-bot <inbox-id>",
 		Short:   "Attach an agent bot to an inbox (0 detaches)",
-		Example: "  cwctl inboxes set-agent-bot 3 --agent-bot 1",
+		Example: "  wootctl inboxes set-agent-bot 3 --agent-bot 1",
 		Args:    cobra.ExactArgs(1),
 		RunE: runE(d, false, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -82,7 +82,7 @@ func inboxMembersCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "members <inbox-id>",
 		Short:   "List the agents in an inbox",
-		Example: "  cwctl inboxes members 3",
+		Example: "  wootctl inboxes members 3",
 		Args:    cobra.ExactArgs(1),
 		RunE: runListE(d, false, []string{"id", "name", "email", "role"}, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -100,7 +100,7 @@ func inboxMembersEditCmd(use, method, short string) func(d *deps) *cobra.Command
 		cmd := &cobra.Command{
 			Use:     use + " <inbox-id>",
 			Short:   short,
-			Example: "  cwctl inboxes " + use + " 3 --user-ids 1,2",
+			Example: "  wootctl inboxes " + use + " 3 --user-ids 1,2",
 			Args:    cobra.ExactArgs(1),
 			RunE: runE(d, false, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 				var out json.RawMessage

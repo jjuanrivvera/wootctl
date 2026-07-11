@@ -7,7 +7,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/jjuanrivvera/cwctl/internal/auth"
+	"github.com/jjuanrivvera/wootctl/internal/auth"
 )
 
 // fakeStore is an in-memory auth.Store so tests never touch a real OS keyring.
@@ -58,11 +58,11 @@ func newEnv(t *testing.T, handler http.HandlerFunc) *env {
 	t.Cleanup(srv.Close)
 
 	t.Setenv("XDG_CONFIG_HOME", t.TempDir())
-	t.Setenv("CWCTL_BASE_URL", srv.URL)
-	t.Setenv("CWCTL_ACCOUNT_ID", "1")
-	t.Setenv("CWCTL_API_KEY", "test-token")
-	t.Setenv("CWCTL_PLATFORM_TOKEN", "platform-token")
-	t.Setenv("CWCTL_PROFILE", "")
+	t.Setenv("WOOTCTL_BASE_URL", srv.URL)
+	t.Setenv("WOOTCTL_ACCOUNT_ID", "1")
+	t.Setenv("WOOTCTL_API_KEY", "test-token")
+	t.Setenv("WOOTCTL_PLATFORM_TOKEN", "platform-token")
+	t.Setenv("WOOTCTL_PROFILE", "")
 	t.Setenv("NO_COLOR", "1")
 
 	return &env{t: t, srv: srv, store: newFakeStore()}

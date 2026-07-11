@@ -3,7 +3,7 @@
 # One concrete check per atomic criterion. Copied into a generated CLI under scripts/.
 # Usage: ./scripts/dod-check.sh <binary-name>
 set -uo pipefail
-BIN="${1:-cwctl}"
+BIN="${1:-wootctl}"
 fail=0
 
 ok()   { printf "  ✓ %s\n" "$1"; }

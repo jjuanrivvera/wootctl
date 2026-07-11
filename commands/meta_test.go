@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/jjuanrivvera/cwctl/internal/auth"
-	"github.com/jjuanrivvera/cwctl/internal/config"
+	"github.com/jjuanrivvera/wootctl/internal/auth"
+	"github.com/jjuanrivvera/wootctl/internal/config"
 )
 
 const profileBody = `{"id":7,"name":"Juan","email":"juan@example.com","accounts":[{"id":1,"name":"Soporte","role":"administrator"}]}`
@@ -18,9 +18,9 @@ const twoAccountsBody = `{"id":7,"name":"Juan","email":"juan@example.com","accou
 
 func TestAuthLogin_StoresTokenAndProfile(t *testing.T) {
 	e := newEnv(t, jsonHandler(profileBody))
-	t.Setenv("CWCTL_API_KEY", "") // login must not shortcut through env
-	t.Setenv("CWCTL_ACCOUNT_ID", "")
-	t.Setenv("CWCTL_BASE_URL", "")
+	t.Setenv("WOOTCTL_API_KEY", "") // login must not shortcut through env
+	t.Setenv("WOOTCTL_ACCOUNT_ID", "")
+	t.Setenv("WOOTCTL_BASE_URL", "")
 
 	out, errOut, err := e.run("auth", "login", "--url", e.srv.URL, "--api-key", "secret-token")
 	require.NoError(t, err)
@@ -43,7 +43,7 @@ func TestAuthLogin_StoresTokenAndProfile(t *testing.T) {
 
 func TestAuthLogin_MultipleAccountsNeedsChoice(t *testing.T) {
 	e := newEnv(t, jsonHandler(twoAccountsBody))
-	t.Setenv("CWCTL_ACCOUNT_ID", "")
+	t.Setenv("WOOTCTL_ACCOUNT_ID", "")
 
 	// Non-interactive with several accounts and no --account: fails with the list.
 	_, _, err := e.run("auth", "login", "--url", e.srv.URL, "--api-key", "tok")
@@ -200,7 +200,7 @@ func TestDoctor_HappyAndJSON(t *testing.T) {
 
 func TestDoctor_FailsWithoutBaseURL(t *testing.T) {
 	e := newEnv(t, jsonHandler(profileBody))
-	t.Setenv("CWCTL_BASE_URL", "")
+	t.Setenv("WOOTCTL_BASE_URL", "")
 	_, _, err := e.run("doctor")
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "check(s) failed")
@@ -240,7 +240,7 @@ func TestGuardWriteFiles_CreatesUnderDotClaude(t *testing.T) {
 
 	_, errOut, err := e.run("agent", "guard", "--host", "claude-code", "--write")
 	require.NoError(t, err)
-	assert.Contains(t, errOut, "wrote .claude/hooks/cwctl-guard.sh")
+	assert.Contains(t, errOut, "wrote .claude/hooks/wootctl-guard.sh")
 
 	// Never overwrites.
 	_, _, err = e.run("agent", "guard", "--host", "claude-code", "--write")

@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a problem with cwctl
+about: Report a problem with wootctl
 labels: bug
 ---
 
@@ -11,13 +11,13 @@ A clear description of the bug.
 The command(s) you ran. Add `--dry-run` output where relevant (the token is redacted).
 
 ```
-cwctl ...
+wootctl ...
 ```
 
 **Expected vs actual**
 What you expected, and what happened instead (paste the error — it includes a hint).
 
 **Environment**
-- cwctl version: `cwctl version`
+- wootctl version: `wootctl version`
 - OS / arch:
 - Install method: brew / scoop / go install / package

@@ -1,14 +1,14 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
-  "name": "cwctl",
+  "name": "wootctl",
   "owner": { "name": "jjuanrivvera", "url": "https://github.com/jjuanrivvera" },
   "plugins": [
     {
-      "name": "cwctl-cli",
+      "name": "wootctl-cli",
       "source": "./",
       "version": "0.1.0",
       "description": "Drive the full Chatwoot API from the terminal: conversations, messages (attachments included), contacts, agents, teams, inboxes, labels, automation, reports/analytics, the platform provisioning API, and the public client API — with profiles, keyring auth, and agent guardrails.",
-      "homepage": "https://github.com/jjuanrivvera/cwctl",
+      "homepage": "https://github.com/jjuanrivvera/wootctl",
       "keywords": ["chatwoot", "cli", "customer-support", "ai-agent", "mcp"]
     }
   ]

@@ -11,10 +11,10 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jjuanrivvera/cwctl/internal/api"
-	"github.com/jjuanrivvera/cwctl/internal/auth"
-	"github.com/jjuanrivvera/cwctl/internal/config"
-	"github.com/jjuanrivvera/cwctl/internal/output"
+	"github.com/jjuanrivvera/wootctl/internal/api"
+	"github.com/jjuanrivvera/wootctl/internal/auth"
+	"github.com/jjuanrivvera/wootctl/internal/config"
+	"github.com/jjuanrivvera/wootctl/internal/output"
 )
 
 // globalFlags holds the persistent flag values for one command tree.
@@ -81,19 +81,19 @@ func NewRootCmd() *cobra.Command { return newRootCmd(newDeps()) }
 // newRootCmd is the deps-injected assembly used by tests (fake store, temp config).
 func newRootCmd(d *deps) *cobra.Command {
 	root := &cobra.Command{
-		Use:   "cwctl",
+		Use:   "wootctl",
 		Short: "A fast, scriptable CLI for the full Chatwoot API",
-		Long: `cwctl drives Chatwoot from the terminal: conversations, messages, contacts,
+		Long: `wootctl drives Chatwoot from the terminal: conversations, messages, contacts,
 agents, teams, inboxes, reports, the platform API, and the public client API — 144/144
 documented operations, with named profiles for working across several instances.
 
 Examples:
-  cwctl auth login
-  cwctl conversations list --status open
-  cwctl messages create 123 --content "On it!"
-  cwctl contacts search --q ana -o json
-  cwctl reports summary --since 2026-06-01 --until 2026-07-01
-  cwctl --profile staging conversations list --all`,
+  wootctl auth login
+  wootctl conversations list --status open
+  wootctl messages create 123 --content "On it!"
+  wootctl contacts search --q ana -o json
+  wootctl reports summary --since 2026-06-01 --until 2026-07-01
+  wootctl --profile staging conversations list --all`,
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
@@ -166,7 +166,7 @@ func (d *deps) getAPIClient(requireAuth bool) (*api.Client, *config.Config, erro
 }
 
 // clientForProfile builds a client for an explicitly named profile. allowGlobals wires the
-// global --base-url/--account-id flags and the CWCTL_* env overrides; it MUST be false for a
+// global --base-url/--account-id flags and the WOOTCTL_* env overrides; it MUST be false for a
 // secondary profile (e.g. `sync --to <profile>`), whose base/account/token come only from its
 // own stored config + keyring so the active profile's flags don't leak across instances.
 func (d *deps) clientForProfile(cfg *config.Config, profileName string, requireAuth, allowGlobals bool) (*api.Client, error) {
@@ -174,15 +174,15 @@ func (d *deps) clientForProfile(cfg *config.Config, profileName string, requireA
 
 	baseURL := prof.BaseURL
 	if allowGlobals {
-		baseURL = config.FirstNonEmpty(d.gf.baseURL, os.Getenv("CWCTL_BASE_URL"), prof.BaseURL)
+		baseURL = config.FirstNonEmpty(d.gf.baseURL, os.Getenv("WOOTCTL_BASE_URL"), prof.BaseURL)
 	}
 	if baseURL == "" {
-		return nil, fmt.Errorf("no base URL for profile %q — run `cwctl --profile %s auth login`", profileName, profileName)
+		return nil, fmt.Errorf("no base URL for profile %q — run `wootctl --profile %s auth login`", profileName, profileName)
 	}
 
 	var token string
 	if allowGlobals {
-		token = os.Getenv("CWCTL_API_KEY")
+		token = os.Getenv("WOOTCTL_API_KEY")
 	}
 	if token == "" {
 		if t, err := d.store().Get(profileName); err == nil {
@@ -190,12 +190,12 @@ func (d *deps) clientForProfile(cfg *config.Config, profileName string, requireA
 		}
 	}
 	if requireAuth && token == "" {
-		return nil, fmt.Errorf("no API token for profile %q — run `cwctl --profile %s auth login`", profileName, profileName)
+		return nil, fmt.Errorf("no API token for profile %q — run `wootctl --profile %s auth login`", profileName, profileName)
 	}
 
 	var platformToken string
 	if allowGlobals {
-		platformToken = os.Getenv("CWCTL_PLATFORM_TOKEN")
+		platformToken = os.Getenv("WOOTCTL_PLATFORM_TOKEN")
 	}
 	if platformToken == "" {
 		if t, err := d.store().Get(auth.PlatformKey(profileName)); err == nil {
@@ -218,7 +218,7 @@ func (d *deps) clientForProfile(cfg *config.Config, profileName string, requireA
 	)
 	c.AccountID = prof.AccountID
 	if allowGlobals {
-		c.AccountID = config.FirstNonEmpty(d.gf.accountID, os.Getenv("CWCTL_ACCOUNT_ID"), prof.AccountID)
+		c.AccountID = config.FirstNonEmpty(d.gf.accountID, os.Getenv("WOOTCTL_ACCOUNT_ID"), prof.AccountID)
 	}
 	c.ShowToken = d.gf.showToken
 	c.Verbose = d.gf.verbose

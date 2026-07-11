@@ -24,13 +24,13 @@ func init() {
 the credential class is chosen from the path exactly like first-class commands
 (platform/* uses the platform token; public/* sends none).
 
-This is the documented escape hatch for anything cwctl does not wrap as a
+This is the documented escape hatch for anything wootctl does not wrap as a
 first-class command. It honors --dry-run, -o/--output, and --jq like every other
 command. Non-GET methods are never auto-retried.`,
-			Example: `  cwctl api GET api/v1/accounts/1/conversations/42
-  cwctl api GET api/v2/accounts/1/reports/summary -q since=1719800000 -q until=1722400000
-  cwctl api POST api/v1/accounts/1/labels -d '{"title":"vip","color":"#0055ff"}'
-  cwctl api DELETE api/v1/accounts/1/labels/9 --dry-run`,
+			Example: `  wootctl api GET api/v1/accounts/1/conversations/42
+  wootctl api GET api/v2/accounts/1/reports/summary -q since=1719800000 -q until=1722400000
+  wootctl api POST api/v1/accounts/1/labels -d '{"title":"vip","color":"#0055ff"}'
+  wootctl api DELETE api/v1/accounts/1/labels/9 --dry-run`,
 			Args: cobra.ExactArgs(2),
 			RunE: func(cmd *cobra.Command, args []string) error {
 				method := strings.ToUpper(args[0])

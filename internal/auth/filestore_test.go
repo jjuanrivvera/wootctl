@@ -42,7 +42,7 @@ func TestFileStore_RoundTrip(t *testing.T) {
 }
 
 func TestFileStore_PasswordKey(t *testing.T) {
-	t.Setenv("CWCTL_KEYRING_PASSWORD", "correct horse battery staple")
+	t.Setenv("WOOTCTL_KEYRING_PASSWORD", "correct horse battery staple")
 	dir := t.TempDir()
 	fs := newFileStore(dir)
 	require.NoError(t, fs.Set("x", "secret"))
@@ -52,7 +52,7 @@ func TestFileStore_PasswordKey(t *testing.T) {
 	assert.Equal(t, "secret", got)
 
 	// A different password must fail to decrypt.
-	t.Setenv("CWCTL_KEYRING_PASSWORD", "wrong password entirely")
+	t.Setenv("WOOTCTL_KEYRING_PASSWORD", "wrong password entirely")
 	_, err = fs.Get("x")
 	assert.Error(t, err)
 }

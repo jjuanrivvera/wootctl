@@ -7,12 +7,12 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jjuanrivvera/cwctl/internal/api"
+	"github.com/jjuanrivvera/wootctl/internal/api"
 )
 
 // The platform API provisions accounts, users, and agent bots on a self-hosted install.
 // Every command here authenticates with the profile's PLATFORM app token (selected by the
-// /platform path prefix) — `cwctl auth login --platform-token <t>` stores it.
+// /platform path prefix) — `wootctl auth login --platform-token <t>` stores it.
 
 func init() {
 	registerResource("platform", resourceSpec[api.Rec]{
@@ -86,7 +86,7 @@ func platformAccountUsersListCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "list <account-id>",
 		Short:   "List an account's users",
-		Example: "  cwctl platform account-users list 2",
+		Example: "  wootctl platform account-users list 2",
 		Args:    cobra.ExactArgs(1),
 		RunE: runE(d, false, []string{"account_id", "user_id", "role"}, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -102,7 +102,7 @@ func platformAccountUsersCreateCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "create <account-id>",
 		Short:   "Add a user to an account",
-		Example: "  cwctl platform account-users create 2 --user-id 7 --role agent",
+		Example: "  wootctl platform account-users create 2 --user-id 7 --role agent",
 		Args:    cobra.ExactArgs(1),
 		RunE: runE(d, false, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage
@@ -123,7 +123,7 @@ func platformAccountUsersDeleteCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "delete <account-id>",
 		Short:   "Remove a user from an account",
-		Example: "  cwctl platform account-users delete 2 --user-id 7",
+		Example: "  wootctl platform account-users delete 2 --user-id 7",
 		Args:    cobra.ExactArgs(1),
 		RunE: runE(d, false, nil, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			// The user id rides the DELETE body on this endpoint.
@@ -147,7 +147,7 @@ func platformUserSSOLinkCmd(d *deps) *cobra.Command {
 	return &cobra.Command{
 		Use:     "sso-link <id>",
 		Short:   "Get a user's one-time SSO login URL",
-		Example: "  cwctl platform users sso-link 7",
+		Example: "  wootctl platform users sso-link 7",
 		Args:    cobra.ExactArgs(1),
 		RunE: runE(d, false, []string{"url"}, func(cmd *cobra.Command, c *api.Client, args []string) (json.RawMessage, error) {
 			var out json.RawMessage

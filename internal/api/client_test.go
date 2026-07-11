@@ -213,7 +213,7 @@ func TestClient_RawSurfacesTypedError(t *testing.T) {
 	var apiErr *APIError
 	require.ErrorAs(t, err, &apiErr)
 	assert.Equal(t, http.StatusNotFound, apiErr.StatusCode)
-	assert.Contains(t, apiErr.Error(), "cwctl")
+	assert.Contains(t, apiErr.Error(), "wootctl")
 }
 
 func TestClient_VerboseLogsRoundTrip(t *testing.T) {

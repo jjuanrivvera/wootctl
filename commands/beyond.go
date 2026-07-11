@@ -12,8 +12,8 @@ import (
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
 
-	"github.com/jjuanrivvera/cwctl/internal/api"
-	"github.com/jjuanrivvera/cwctl/internal/config"
+	"github.com/jjuanrivvera/wootctl/internal/api"
+	"github.com/jjuanrivvera/wootctl/internal/config"
 )
 
 // Beyond-the-API layer (cliwright GOAL.md §3c): git-friendly backup/restore of an account's
@@ -390,8 +390,8 @@ func backupCmd(d *deps) *cobra.Command {
 		Long: `Write the account's portable CONFIG to a directory of YAML files (one per resource
 kind), keeping only the writable fields so the output is stable and diffable in git.
 Conversations, contacts, and messages are live data, not config, and are never backed up.`,
-		Example: `  cwctl backup --dir ./chatwoot-config
-  cwctl backup --dir ./cfg --only labels,canned-responses`,
+		Example: `  wootctl backup --dir ./chatwoot-config
+  wootctl backup --dir ./cfg --only labels,canned-responses`,
 		Args: cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			kinds, err := selectKinds(only)
@@ -441,9 +441,9 @@ resources absent from the backup are deleted. Matching is by natural key (title,
 name, url, attribute_key); a key duplicated in the account is skipped, never pruned.
 
 Always dry-run first — restore mutates real config.`,
-		Example: `  cwctl restore --dir ./chatwoot-config --dry-run
-  cwctl restore --dir ./chatwoot-config
-  cwctl restore --dir ./chatwoot-config --only labels --prune`,
+		Example: `  wootctl restore --dir ./chatwoot-config --dry-run
+  wootctl restore --dir ./chatwoot-config
+  wootctl restore --dir ./chatwoot-config --only labels --prune`,
 		Args: cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			kinds, err := selectKinds(only)
@@ -484,9 +484,9 @@ canned responses, and automation from staging to production, or keep two support
 aligned. Matching and safety are identical to restore.
 
 Always dry-run first.`,
-		Example: `  cwctl sync --to acue --dry-run
-  cwctl sync --to acue --only canned-responses,labels
-  cwctl --profile staging sync --to prod --prune`,
+		Example: `  wootctl sync --to acue --dry-run
+  wootctl sync --to acue --only canned-responses,labels
+  wootctl --profile staging sync --to prod --prune`,
 		Args: cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			kinds, err := selectKinds(only)
@@ -505,7 +505,7 @@ Always dry-run first.`,
 				return fmt.Errorf("--to and the source profile are both %q; choose different instances", toProfile)
 			}
 			if _, ok := cfg.Profile(toProfile); !ok {
-				return fmt.Errorf("no such profile %q — create it with `cwctl --profile %s auth login`", toProfile, toProfile)
+				return fmt.Errorf("no such profile %q — create it with `wootctl --profile %s auth login`", toProfile, toProfile)
 			}
 			source, err := d.clientForProfile(cfg, sourceName, true, true)
 			if err != nil {

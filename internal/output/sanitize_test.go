@@ -57,7 +57,7 @@ func TestRender_TableSanitizesEscapes(t *testing.T) {
 }
 
 func TestRender_JSONStaysFaithful(t *testing.T) {
-	// Machine JSON output must NOT be altered — the consumer owns rendering, and cwctl must
+	// Machine JSON output must NOT be altered — the consumer owns rendering, and wootctl must
 	// not corrupt data on the wire. The ESC survives as an escaped .
 	out, _ := render(t, jsonWith("\x1b[31mred"), Options{Format: FormatJSON})
 	assert.Contains(t, out, "\\u001b")

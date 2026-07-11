@@ -7,9 +7,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jjuanrivvera/cwctl/internal/auth"
-	"github.com/jjuanrivvera/cwctl/internal/config"
-	"github.com/jjuanrivvera/cwctl/internal/version"
+	"github.com/jjuanrivvera/wootctl/internal/auth"
+	"github.com/jjuanrivvera/wootctl/internal/config"
+	"github.com/jjuanrivvera/wootctl/internal/version"
 )
 
 type doctorCheck struct {
@@ -25,8 +25,8 @@ func init() {
 			Use:   "doctor",
 			Short: "Diagnose configuration, credentials, and connectivity",
 			Long:  "Run end-to-end checks: config file, active profile, base URL, token presence and validity, account scope, platform token. Exits non-zero when anything fails.",
-			Example: `  cwctl doctor
-  cwctl doctor --json`,
+			Example: `  wootctl doctor
+  wootctl doctor --json`,
 			Args: cobra.NoArgs,
 			RunE: func(cmd *cobra.Command, _ []string) error {
 				var checks []doctorCheck
@@ -43,7 +43,7 @@ func init() {
 					_, exists := cfg.Profile(profileName)
 					add("profile resolved", true, profileName)
 					if !exists && profileName != config.DefaultProfile {
-						add("profile exists", false, fmt.Sprintf("profile %q not in config — run `cwctl --profile %s auth login`", profileName, profileName))
+						add("profile exists", false, fmt.Sprintf("profile %q not in config — run `wootctl --profile %s auth login`", profileName, profileName))
 					}
 				}
 
@@ -52,13 +52,13 @@ func init() {
 					add("base URL", false, cErr.Error())
 				} else {
 					add("base URL", true, c.BaseURL)
-					add("account id", c.AccountID != "", orMsg(c.AccountID, "unset — run `cwctl auth login` or `cwctl config set account_id <id>`"))
+					add("account id", c.AccountID != "", orMsg(c.AccountID, "unset — run `wootctl auth login` or `wootctl config set account_id <id>`"))
 
 					token, tErr := d.store().Get(profileName)
 					hasToken := tErr == nil && token != ""
 					detail := "backend: " + d.store().Backend()
-					if !hasToken && os.Getenv("CWCTL_API_KEY") != "" {
-						hasToken, detail = true, "from CWCTL_API_KEY env"
+					if !hasToken && os.Getenv("WOOTCTL_API_KEY") != "" {
+						hasToken, detail = true, "from WOOTCTL_API_KEY env"
 					}
 					add("user token stored", hasToken, detail)
 
@@ -72,9 +72,9 @@ func init() {
 					}
 
 					if _, ok := firstStoreHit(d, auth.PlatformKey(profileName)); ok {
-						add("platform token stored", true, "cwctl platform … available")
+						add("platform token stored", true, "wootctl platform … available")
 					} else {
-						add("platform token stored", true, "absent (only needed for `cwctl platform …`)")
+						add("platform token stored", true, "absent (only needed for `wootctl platform …`)")
 					}
 				}
 				add("version", true, version.String())

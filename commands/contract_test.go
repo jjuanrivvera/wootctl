@@ -14,12 +14,12 @@ import (
 	"github.com/getkin/kin-openapi/routers/gorillamux"
 	"github.com/stretchr/testify/require"
 
-	"github.com/jjuanrivvera/cwctl/internal/auth"
+	"github.com/jjuanrivvera/wootctl/internal/auth"
 )
 
-// Contract test: every request cwctl builds for the application API must validate against
+// Contract test: every request wootctl builds for the application API must validate against
 // Chatwoot's own OpenAPI spec (method, path, and request-body schema). This is the wire-level
-// check the official CLI has and cwctl lacked — spec-check proves a command EXISTS; this proves
+// check the official CLI has and wootctl lacked — spec-check proves a command EXISTS; this proves
 // the bytes it sends match the schema. The spec is vendored at internal/api/testdata (pinned to
 // the manifest's swagger commit).
 
@@ -90,10 +90,10 @@ func TestContract_RequestsMatchOpenAPISpec(t *testing.T) {
 	srv, violations := contractServer(t)
 
 	t.Setenv("XDG_CONFIG_HOME", t.TempDir())
-	t.Setenv("CWCTL_BASE_URL", srv.URL)
-	t.Setenv("CWCTL_ACCOUNT_ID", "1")
-	t.Setenv("CWCTL_API_KEY", "test-token")
-	t.Setenv("CWCTL_PROFILE", "")
+	t.Setenv("WOOTCTL_BASE_URL", srv.URL)
+	t.Setenv("WOOTCTL_ACCOUNT_ID", "1")
+	t.Setenv("WOOTCTL_API_KEY", "test-token")
+	t.Setenv("WOOTCTL_PROFILE", "")
 	t.Setenv("NO_COLOR", "1")
 
 	store := newFakeStore()

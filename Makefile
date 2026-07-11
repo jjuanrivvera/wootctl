@@ -1,7 +1,7 @@
-# Makefile — cwctl (Chatwoot CLI), built to the cliwright standard.
+# Makefile — wootctl (Chatwoot CLI), built to the cliwright standard.
 # `make verify` is the deterministic acceptance gate; `make accept` adds the LLM judge.
-BINARY      := cwctl
-MODULE      := github.com/jjuanrivvera/cwctl
+BINARY      := wootctl
+MODULE      := github.com/jjuanrivvera/wootctl
 VERSION     ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo dev)
 COMMIT      ?= $(shell git rev-parse --short HEAD 2>/dev/null || echo none)
 DATE        ?= $(shell date -u +%Y-%m-%dT%H:%M:%SZ)

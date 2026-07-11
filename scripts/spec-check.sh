@@ -7,7 +7,7 @@ set -uo pipefail
 MANIFEST="${1:-api-manifest.json}"
 
 [[ -f "$MANIFEST" ]] || { echo "✗ $MANIFEST missing — §11 requires a checked-in spec-derived manifest"; exit 1; }
-BIN="$(jq -r '.binary // "cwctl"' "$MANIFEST")"
+BIN="$(jq -r '.binary // "wootctl"' "$MANIFEST")"
 BIN_PATH="bin/$BIN"
 # ALWAYS rebuild: a stale bin/ would let the check pass against an outdated surface.
 make build >/dev/null 2>&1 || { echo "✗ cannot build $BIN for the surface check"; exit 1; }

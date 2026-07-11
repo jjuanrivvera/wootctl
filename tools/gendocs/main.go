@@ -8,7 +8,7 @@ import (
 
 	"github.com/spf13/cobra/doc"
 
-	"github.com/jjuanrivvera/cwctl/commands"
+	"github.com/jjuanrivvera/wootctl/commands"
 )
 
 func main() {

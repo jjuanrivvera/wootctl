@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/jjuanrivvera/cwctl/internal/api"
+	"github.com/jjuanrivvera/wootctl/internal/api"
 )
 
 func init() {
@@ -41,7 +41,7 @@ func portalCreateArticleCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "create-article <portal-id>",
 		Short:   "Add an article to a portal",
-		Example: `  cwctl portals create-article 1 --title "Cómo empezar" --content "..." --author-id 1 --category-id 2`,
+		Example: `  wootctl portals create-article 1 --title "Cómo empezar" --content "..." --author-id 1 --category-id 2`,
 		Args:    cobra.ExactArgs(1),
 	}
 	collect := registerBodyFlags(cmd, []field{
@@ -72,7 +72,7 @@ func portalCreateCategoryCmd(d *deps) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "create-category <portal-id>",
 		Short:   "Add a category to a portal",
-		Example: `  cwctl portals create-category 1 --name "Facturación" --locale es`,
+		Example: `  wootctl portals create-category 1 --name "Facturación" --locale es`,
 		Args:    cobra.ExactArgs(1),
 	}
 	collect := registerBodyFlags(cmd, []field{

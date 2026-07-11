@@ -1,8 +1,8 @@
-site_name: cwctl
+site_name: wootctl
 site_description: A fast, scriptable CLI for the Chatwoot API
-site_url: https://jjuanrivvera.github.io/cwctl/
-repo_url: https://github.com/jjuanrivvera/cwctl
-repo_name: jjuanrivvera/cwctl
+site_url: https://jjuanrivvera.github.io/wootctl/
+repo_url: https://github.com/jjuanrivvera/wootctl
+repo_name: jjuanrivvera/wootctl
 theme:
   name: material
   palette:
@@ -34,4 +34,4 @@ nav:
       - Output & filtering: output.md
       - Backup, restore & sync: backup-sync.md
       - AI agents: agents.md
-  - Command reference: commands/cwctl.md
+  - Command reference: commands/wootctl.md

@@ -130,14 +130,14 @@ func init() {
 		agentCmd := &cobra.Command{
 			Use:   "agent",
 			Short: "AI-agent integration helpers",
-			Long:  "Generate safety configuration for AI agents that drive cwctl.",
+			Long:  "Generate safety configuration for AI agents that drive wootctl.",
 		}
 
 		var host, out string
 		var allWrites, write bool
 		guard := &cobra.Command{
 			Use:   "guard --host <claude-code|codex|opencode>",
-			Short: "Generate agent-safety config that blocks destructive cwctl operations",
+			Short: "Generate agent-safety config that blocks destructive wootctl operations",
 			Long: `Classify every API command (read / write / irreversible) from the live command tree
 and emit host safety config: irreversible operations (deletes, contacts merge,
 remove-members, delete-hook) are hard-blocked, ordinary writes require approval, and
@@ -145,23 +145,23 @@ reads are allowed. Cobra alias paths are covered too — "conv delete" hits the 
 rails as "conversations delete".
 
 For claude-code the output also includes a PreToolUse hook script
-(.claude/hooks/cwctl-guard.sh): it strips quote/backslash obfuscation, matches blocked
-subcommand paths at the command position even for path-invoked binaries (./bin/cwctl,
-/usr/local/bin/cwctl), and gates the raw "cwctl api <METHOD> <PATH>" escape hatch at
+(.claude/hooks/wootctl-guard.sh): it strips quote/backslash obfuscation, matches blocked
+subcommand paths at the command position even for path-invoked binaries (./bin/wootctl,
+/usr/local/bin/wootctl), and gates the raw "wootctl api <METHOD> <PATH>" escape hatch at
 the METHOD position — only GET/HEAD/OPTIONS pass; POST/PUT/PATCH/DELETE are denied
 case-insensitively, while a GET whose path merely contains "delete" stays allowed.
-"cwctl alias set" is denied so an agent cannot mint a new shorthand for a blocked
+"wootctl alias set" is denied so an agent cannot mint a new shorthand for a blocked
 command.
 
 MCP-only operation is the hard guarantee; the Bash rails are best-effort — the hook
 defeats quoting tricks and path prefixes, but not variable indirection
-(a=delete; cwctl labels $a 1) or shell aliases. Conservative false positives are
-accepted: a line that merely QUOTES a blocked command (rg "cwctl labels delete") is
+(a=delete; wootctl labels $a 1) or shell aliases. Conservative false positives are
+accepted: a line that merely QUOTES a blocked command (rg "wootctl labels delete") is
 denied.`,
-			Example: `  cwctl agent guard --host claude-code
-  cwctl agent guard --host claude-code --write          # write the files into .claude/
-  cwctl agent guard --host codex --out ~/.codex/config.toml
-  cwctl agent guard --host opencode --all-writes`,
+			Example: `  wootctl agent guard --host claude-code
+  wootctl agent guard --host claude-code --write          # write the files into .claude/
+  wootctl agent guard --host codex --out ~/.codex/config.toml
+  wootctl agent guard --host opencode --all-writes`,
 			Args: cobra.NoArgs,
 			RunE: func(cmd *cobra.Command, _ []string) error {
 				cls := classifyAPICommands(allWrites)
@@ -214,8 +214,8 @@ func writeClaudeCodeFiles(cmd *cobra.Command, cls classification) error {
 		return err
 	}
 	files := map[string]string{
-		".claude/hooks/cwctl-guard.sh":      hook,
-		".claude/cwctl-guard.settings.json": settings,
+		".claude/hooks/wootctl-guard.sh":      hook,
+		".claude/wootctl-guard.settings.json": settings,
 	}
 	for path, content := range files {
 		if _, err := os.Stat(path); err == nil {
@@ -233,7 +233,7 @@ func writeClaudeCodeFiles(cmd *cobra.Command, cls classification) error {
 		}
 		fmt.Fprintf(cmd.ErrOrStderr(), "wrote %s\n", path)
 	}
-	fmt.Fprintln(cmd.ErrOrStderr(), "merge .claude/cwctl-guard.settings.json into .claude/settings.json to activate the hook")
+	fmt.Fprintln(cmd.ErrOrStderr(), "merge .claude/wootctl-guard.settings.json into .claude/settings.json to activate the hook")
 	return nil
 }
 
@@ -245,12 +245,12 @@ func dirOf(path string) string {
 }
 
 // bashPattern is the Claude-Code/OpenCode Bash permission pattern for a command path.
-func bashPattern(path string) string { return "Bash(cwctl " + path + ":*)" }
+func bashPattern(path string) string { return "Bash(wootctl " + path + ":*)" }
 
-// mcpToolPattern is the MCP tool name a host gates: cw_<group>_<verb> under the cwctl MCP
+// mcpToolPattern is the MCP tool name a host gates: cw_<group>_<verb> under the wootctl MCP
 // server. These must be EXACT names — Claude permission rules are literal prefixes, not
 // regex (§3b hardening #7). ophis joins path segments with "_" but keeps hyphens inside a
 // segment ("audit-logs list" → cw_audit-logs_list), so only spaces are replaced here.
 func mcpToolPattern(path string) string {
-	return "mcp__cwctl__cw_" + strings.ReplaceAll(path, " ", "_")
+	return "mcp__wootctl__cw_" + strings.ReplaceAll(path, " ", "_")
 }
