@@ -20,6 +20,9 @@ $ cwctl conversations toggle-status 42 --status resolved
 ## Install
 
 ```bash
+# Install script (macOS / Linux) — downloads the release binary, verifies its checksum
+curl -fsSL https://raw.githubusercontent.com/jjuanrivvera/cwctl/main/install.sh | sh
+
 # Homebrew (macOS / Linux)
 brew install jjuanrivvera/cwctl/cwctl-cli
 
