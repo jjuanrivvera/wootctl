@@ -32,8 +32,8 @@ case "$os" in
 esac
 arch="$(uname -m)"
 case "$arch" in
-  x86_64 | amd64) arch="amd64" ;;
-  arm64 | aarch64) arch="arm64" ;;
+  x86_64 | amd64) arch="amd64"; archre="(amd64|x86_64)" ;;
+  arm64 | aarch64) arch="arm64"; archre="(arm64|aarch64)" ;;
   *) die "unsupported architecture: $arch" ;;
 esac
 
@@ -51,7 +51,7 @@ trap 'rm -rf "$tmp"' EXIT INT TERM
 # --- discover the exact archive from checksums.txt (naming-agnostic) ---
 curl -fsSL "${base}/checksums.txt" -o "${tmp}/checksums.txt" \
   || die "could not download checksums.txt for ${VERSION}"
-archive="$(awk '{print $2}' "${tmp}/checksums.txt" | grep -E "_${os}_${arch}\.tar\.gz$" | head -1)"
+archive="$(awk '{print $2}' "${tmp}/checksums.txt" | grep -iE "_${os}_${archre}\.tar\.gz$" | head -1)"
 [ -n "$archive" ] || die "no ${os}/${arch} archive in ${VERSION}"
 
 # --- download + verify the SHA-256 ---
