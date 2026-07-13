@@ -1,6 +1,23 @@
+<div align="center">
+
 # wootctl
 
-> 🏭 Part of the [cliwright](https://cliwright.jjuanrivvera.com) CLI fleet.
+[![CI](https://github.com/jjuanrivvera/wootctl/actions/workflows/ci.yml/badge.svg)](https://github.com/jjuanrivvera/wootctl/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/jjuanrivvera/wootctl)](https://github.com/jjuanrivvera/wootctl/releases/latest)
+[![Coverage](https://img.shields.io/badge/coverage-%E2%89%A580%25-brightgreen)](https://github.com/jjuanrivvera/wootctl/actions/workflows/ci.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/jjuanrivvera/wootctl.svg)](https://pkg.go.dev/github.com/jjuanrivvera/wootctl)
+[![Go version](https://img.shields.io/github/go-mod/go-version/jjuanrivvera/wootctl)](go.mod)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/jjuanrivvera/wootctl)
+[![Built with cliwright](https://img.shields.io/badge/built_with-cliwright-1f6feb)](https://cliwright.jjuanrivvera.com)
+
+**A fast, scriptable CLI for the full Chatwoot API — application, platform, and public client groups.**
+
+[Documentation](https://jjuanrivvera.github.io/wootctl/) · [Commands](https://jjuanrivvera.github.io/wootctl/commands/)
+
+</div>
+
+---
 
 A fast, scriptable CLI for the full [Chatwoot](https://www.chatwoot.com) API.
 
