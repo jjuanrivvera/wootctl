@@ -1,0 +1,144 @@
+GET	/api/v1/accounts/{account_id}	get-account-details	Account
+PATCH	/api/v1/accounts/{account_id}	update-account	Account
+GET	/api/v1/accounts/{account_id}/agent_bots	list-all-account-agent-bots	Account AgentBots
+POST	/api/v1/accounts/{account_id}/agent_bots	create-an-account-agent-bot	Account AgentBots
+DELETE	/api/v1/accounts/{account_id}/agent_bots/{id}	delete-an-account-agent-bot	Account AgentBots
+GET	/api/v1/accounts/{account_id}/agent_bots/{id}	get-details-of-a-single-account-agent-bot	Account AgentBots
+PATCH	/api/v1/accounts/{account_id}/agent_bots/{id}	update-an-account-agent-bot	Account AgentBots
+DELETE	/platform/api/v1/accounts/{account_id}/account_users	delete-an-account-user	Account Users
+GET	/platform/api/v1/accounts/{account_id}/account_users	list-all-account-users	Account Users
+POST	/platform/api/v1/accounts/{account_id}/account_users	create-an-account-user	Account Users
+POST	/platform/api/v1/accounts	create-an-account	Accounts
+DELETE	/platform/api/v1/accounts/{account_id}	delete-an-account	Accounts
+GET	/platform/api/v1/accounts/{account_id}	get-details-of-an-account	Accounts
+PATCH	/platform/api/v1/accounts/{account_id}	update-an-account	Accounts
+GET	/platform/api/v1/agent_bots	list-all-agent-bots	AgentBots
+POST	/platform/api/v1/agent_bots	create-an-agent-bot	AgentBots
+DELETE	/platform/api/v1/agent_bots/{id}	delete-an-agent-bot	AgentBots
+GET	/platform/api/v1/agent_bots/{id}	get-details-of-a-single-agent-bot	AgentBots
+PATCH	/platform/api/v1/agent_bots/{id}	update-an-agent-bot	AgentBots
+GET	/api/v1/accounts/{account_id}/agents	get-account-agents	Agents
+POST	/api/v1/accounts/{account_id}/agents	add-new-agent-to-account	Agents
+DELETE	/api/v1/accounts/{account_id}/agents/{id}	delete-agent-from-account	Agents
+PATCH	/api/v1/accounts/{account_id}/agents/{id}	update-agent-in-account	Agents
+GET	/api/v1/accounts/{account_id}/audit_logs	get-account-audit-logs	Audit Logs
+GET	/api/v1/accounts/{account_id}/automation_rules	get-account-automation-rule	Automation Rule
+POST	/api/v1/accounts/{account_id}/automation_rules	add-new-automation-rule-to-account	Automation Rule
+DELETE	/api/v1/accounts/{account_id}/automation_rules/{id}	delete-automation-rule-from-account	Automation Rule
+GET	/api/v1/accounts/{account_id}/automation_rules/{id}	get-details-of-a-single-automation-rule	Automation Rule
+PATCH	/api/v1/accounts/{account_id}/automation_rules/{id}	update-automation-rule-in-account	Automation Rule
+GET	/survey/responses/{conversation_uuid}	get-csat-survey-page	CSAT Survey Page
+GET	/api/v1/accounts/{account_id}/canned_responses	get-account-canned-response	Canned Responses
+POST	/api/v1/accounts/{account_id}/canned_responses	add-new-canned-response-to-account	Canned Responses
+DELETE	/api/v1/accounts/{account_id}/canned_responses/{id}	delete-canned-response-from-account	Canned Responses
+PATCH	/api/v1/accounts/{account_id}/canned_responses/{id}	update-canned-response-in-account	Canned Responses
+GET	/api/v1/accounts/{account_id}/contacts/{id}/labels	list-all-labels-of-a-contact	Contact Labels
+POST	/api/v1/accounts/{account_id}/contacts/{id}/labels	contact-add-labels	Contact Labels
+POST	/api/v1/accounts/{account_id}/actions/contact_merge	contactMerge	Contacts
+GET	/api/v1/accounts/{account_id}/contacts	contactList	Contacts
+POST	/api/v1/accounts/{account_id}/contacts	contactCreate	Contacts
+POST	/api/v1/accounts/{account_id}/contacts/filter	contactFilter	Contacts
+GET	/api/v1/accounts/{account_id}/contacts/search	contactSearch	Contacts
+DELETE	/api/v1/accounts/{account_id}/contacts/{id}	contactDelete	Contacts
+GET	/api/v1/accounts/{account_id}/contacts/{id}	contactDetails	Contacts
+PUT	/api/v1/accounts/{account_id}/contacts/{id}	contactUpdate	Contacts
+POST	/api/v1/accounts/{account_id}/contacts/{id}/contact_inboxes	contactInboxCreation	Contacts
+GET	/api/v1/accounts/{account_id}/contacts/{id}/contactable_inboxes	contactableInboxesGet	Contacts
+GET	/api/v1/accounts/{account_id}/contacts/{id}/conversations	contactConversations	Contacts
+POST	/public/api/v1/inboxes/{inbox_identifier}/contacts	create-a-contact	Contacts API
+GET	/public/api/v1/inboxes/{inbox_identifier}/contacts/{contact_identifier}	get-details-of-a-contact	Contacts API
+PATCH	/public/api/v1/inboxes/{inbox_identifier}/contacts/{contact_identifier}	update-a-contact	Contacts API
+GET	/accounts/{account_id}/conversations/{conversation_id}/messages	getConversationMessages	Conversation
+POST	/api/v1/accounts/{account_id}/conversations/{conversation_id}/assignments	assign-a-conversation	Conversation Assignments
+GET	/api/v1/accounts/{account_id}/conversations	conversationList	Conversations
+POST	/api/v1/accounts/{account_id}/conversations	newConversation	Conversations
+POST	/api/v1/accounts/{account_id}/conversations/filter	conversationFilter	Conversations
+GET	/api/v1/accounts/{account_id}/conversations/meta	conversationListMeta	Conversations
+GET	/api/v1/accounts/{account_id}/conversations/{conversation_id}	get-details-of-a-conversation	Conversations
+PATCH	/api/v1/accounts/{account_id}/conversations/{conversation_id}	update-conversation	Conversations
+POST	/api/v1/accounts/{account_id}/conversations/{conversation_id}/custom_attributes	update-custom-attributes-of-a-conversation	Conversations
+GET	/api/v1/accounts/{account_id}/conversations/{conversation_id}/labels	list-all-labels-of-a-conversation	Conversations
+POST	/api/v1/accounts/{account_id}/conversations/{conversation_id}/labels	conversation-add-labels	Conversations
+GET	/api/v1/accounts/{account_id}/conversations/{conversation_id}/reporting_events	get-conversation-reporting-events	Conversations
+POST	/api/v1/accounts/{account_id}/conversations/{conversation_id}/toggle_priority	toggle-priority-of-a-conversation	Conversations
+POST	/api/v1/accounts/{account_id}/conversations/{conversation_id}/toggle_status	toggle-status-of-a-conversation	Conversations
+POST	/api/v1/accounts/{account_id}/conversations/{conversation_id}/toggle_typing_status	toggle-typing-status-of-a-conversation	Conversations
+GET	/public/api/v1/inboxes/{inbox_identifier}/contacts/{contact_identifier}/conversations	list-all-contact-conversations	Conversations API
+POST	/public/api/v1/inboxes/{inbox_identifier}/contacts/{contact_identifier}/conversations	create-a-conversation	Conversations API
+GET	/public/api/v1/inboxes/{inbox_identifier}/contacts/{contact_identifier}/conversations/{conversation_id}	get-single-conversation	Conversations API
+POST	/public/api/v1/inboxes/{inbox_identifier}/contacts/{contact_identifier}/conversations/{conversation_id}/toggle_status	resolve-conversation	Conversations API
+POST	/public/api/v1/inboxes/{inbox_identifier}/contacts/{contact_identifier}/conversations/{conversation_id}/toggle_typing	toggle-typing-status	Conversations API
+POST	/public/api/v1/inboxes/{inbox_identifier}/contacts/{contact_identifier}/conversations/{conversation_id}/update_last_seen	update-last-seen	Conversations API
+GET	/api/v1/accounts/{account_id}/custom_attribute_definitions	get-account-custom-attribute	Custom Attributes
+POST	/api/v1/accounts/{account_id}/custom_attribute_definitions	add-new-custom-attribute-to-account	Custom Attributes
+DELETE	/api/v1/accounts/{account_id}/custom_attribute_definitions/{id}	delete-custom-attribute-from-account	Custom Attributes
+GET	/api/v1/accounts/{account_id}/custom_attribute_definitions/{id}	get-details-of-a-single-custom-attribute	Custom Attributes
+PATCH	/api/v1/accounts/{account_id}/custom_attribute_definitions/{id}	update-custom-attribute-in-account	Custom Attributes
+GET	/api/v1/accounts/{account_id}/custom_filters	list-all-filters	Custom Filters
+POST	/api/v1/accounts/{account_id}/custom_filters	create-a-custom-filter	Custom Filters
+DELETE	/api/v1/accounts/{account_id}/custom_filters/{custom_filter_id}	delete-a-custom-filter	Custom Filters
+GET	/api/v1/accounts/{account_id}/custom_filters/{custom_filter_id}	get-details-of-a-single-custom-filter	Custom Filters
+PATCH	/api/v1/accounts/{account_id}/custom_filters/{custom_filter_id}	update-a-custom-filter	Custom Filters
+GET	/api/v1/accounts/{account_id}/portals	get-portal	Help Center
+POST	/api/v1/accounts/{account_id}/portals	add-new-portal-to-account	Help Center
+PATCH	/api/v1/accounts/{account_id}/portals/{id}	update-portal-to-account	Help Center
+POST	/api/v1/accounts/{account_id}/portals/{id}/articles	add-new-article-to-account	Help Center
+POST	/api/v1/accounts/{account_id}/portals/{id}/categories	add-new-category-to-account	Help Center
+GET	/public/api/v1/inboxes/{inbox_identifier}	get-details-of-a-inbox	Inbox API
+DELETE	/api/v1/accounts/{account_id}/inbox_members	delete-agent-in-inbox	Inboxes
+PATCH	/api/v1/accounts/{account_id}/inbox_members	update-agents-in-inbox	Inboxes
+POST	/api/v1/accounts/{account_id}/inbox_members	add-new-agent-to-inbox	Inboxes
+GET	/api/v1/accounts/{account_id}/inbox_members/{inbox_id}	get-inbox-members	Inboxes
+GET	/api/v1/accounts/{account_id}/inboxes	listAllInboxes	Inboxes
+POST	/api/v1/accounts/{account_id}/inboxes	inboxCreation	Inboxes
+GET	/api/v1/accounts/{account_id}/inboxes/{id}	GetInbox	Inboxes
+PATCH	/api/v1/accounts/{account_id}/inboxes/{id}	updateInbox	Inboxes
+GET	/api/v1/accounts/{account_id}/inboxes/{id}/agent_bot	getInboxAgentBot	Inboxes
+POST	/api/v1/accounts/{account_id}/inboxes/{id}/set_agent_bot	updateAgentBot	Inboxes
+GET	/api/v1/accounts/{account_id}/integrations/apps	get-details-of-all-integrations	Integrations
+POST	/api/v1/accounts/{account_id}/integrations/hooks	create-an-integration-hook	Integrations
+DELETE	/api/v1/accounts/{account_id}/integrations/hooks/{hook_id}	delete-an-integration-hook	Integrations
+PATCH	/api/v1/accounts/{account_id}/integrations/hooks/{hook_id}	update-an-integrations-hook	Integrations
+GET	/api/v1/accounts/{account_id}/labels	list-all-labels	Labels
+POST	/api/v1/accounts/{account_id}/labels	create-a-label	Labels
+DELETE	/api/v1/accounts/{account_id}/labels/{id}	delete-a-label	Labels
+GET	/api/v1/accounts/{account_id}/labels/{id}	get-details-of-a-single-label	Labels
+PATCH	/api/v1/accounts/{account_id}/labels/{id}	update-a-label	Labels
+GET	/api/v1/accounts/{account_id}/conversations/{conversation_id}/messages	list-all-messages	Messages
+POST	/api/v1/accounts/{account_id}/conversations/{conversation_id}/messages	create-a-new-message-in-a-conversation	Messages
+DELETE	/api/v1/accounts/{account_id}/conversations/{conversation_id}/messages/{message_id}	delete-a-message	Messages
+GET	/public/api/v1/inboxes/{inbox_identifier}/contacts/{contact_identifier}/conversations/{conversation_id}/messages	list-all-conversation-messages	Messages API
+POST	/public/api/v1/inboxes/{inbox_identifier}/contacts/{contact_identifier}/conversations/{conversation_id}/messages	create-a-message	Messages API
+PATCH	/public/api/v1/inboxes/{inbox_identifier}/contacts/{contact_identifier}/conversations/{conversation_id}/messages/{message_id}	update-a-message	Messages API
+GET	/api/v1/profile	fetchProfile	Profile
+PUT	/api/v1/profile	updateProfile	Profile
+GET	/api/v1/accounts/{account_id}/reporting_events	get-account-reporting-events	Reports
+GET	/api/v2/accounts/{account_id}/reports	list-all-conversation-statistics	Reports
+GET	/api/v2/accounts/{account_id}/reports/conversations	get-account-conversation-metrics	Reports
+GET	/api/v2/accounts/{account_id}/reports/conversations/	get-agent-conversation-metrics	Reports
+GET	/api/v2/accounts/{account_id}/reports/first_response_time_distribution	get-first-response-time-distribution	Reports
+GET	/api/v2/accounts/{account_id}/reports/inbox_label_matrix	get-inbox-label-matrix	Reports
+GET	/api/v2/accounts/{account_id}/reports/outgoing_messages_count	get-outgoing-messages-count	Reports
+GET	/api/v2/accounts/{account_id}/reports/summary	list-all-conversation-statistics-summary	Reports
+GET	/api/v2/accounts/{account_id}/summary_reports/agent	get-agent-summary-report	Reports
+GET	/api/v2/accounts/{account_id}/summary_reports/channel	get-channel-summary-report	Reports
+GET	/api/v2/accounts/{account_id}/summary_reports/inbox	get-inbox-summary-report	Reports
+GET	/api/v2/accounts/{account_id}/summary_reports/team	get-team-summary-report	Reports
+GET	/api/v1/accounts/{account_id}/teams	list-all-teams	Teams
+POST	/api/v1/accounts/{account_id}/teams	create-a-team	Teams
+DELETE	/api/v1/accounts/{account_id}/teams/{team_id}	delete-a-team	Teams
+GET	/api/v1/accounts/{account_id}/teams/{team_id}	get-details-of-a-single-team	Teams
+PATCH	/api/v1/accounts/{account_id}/teams/{team_id}	update-a-team	Teams
+DELETE	/api/v1/accounts/{account_id}/teams/{team_id}/team_members	delete-agent-in-team	Teams
+GET	/api/v1/accounts/{account_id}/teams/{team_id}/team_members	get-team-members	Teams
+PATCH	/api/v1/accounts/{account_id}/teams/{team_id}/team_members	update-agents-in-team	Teams
+POST	/api/v1/accounts/{account_id}/teams/{team_id}/team_members	add-new-agent-to-team	Teams
+POST	/platform/api/v1/users	create-a-user	Users
+DELETE	/platform/api/v1/users/{id}	delete-a-user	Users
+GET	/platform/api/v1/users/{id}	get-details-of-a-user	Users
+PATCH	/platform/api/v1/users/{id}	update-a-user	Users
+GET	/platform/api/v1/users/{id}/login	get-sso-url-of-a-user	Users
+GET	/api/v1/accounts/{account_id}/webhooks	list-all-webhooks	Webhooks
+POST	/api/v1/accounts/{account_id}/webhooks	create-a-webhook	Webhooks
+DELETE	/api/v1/accounts/{account_id}/webhooks/{webhook_id}	delete-a-webhook	Webhooks
+PATCH	/api/v1/accounts/{account_id}/webhooks/{webhook_id}	update-a-webhook	Webhooks
