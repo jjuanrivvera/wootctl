@@ -6,6 +6,10 @@ on:
   push:
     branches: [main, develop]
   pull_request:
+  # This repo's push and pull_request events do not reach Actions (verified: no
+  # run in its entire history was triggered by either). Until that is resolved
+  # with GitHub, workflow_dispatch is the only way to get CI to run at all.
+  workflow_dispatch:
 
 permissions:
   contents: read
