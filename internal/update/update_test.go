@@ -268,7 +268,9 @@ func TestCheckAndUpdate_EndToEnd(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	u := &Updater{CurrentVersion: "0.5.0", HTTPClient: srv.Client(), ExecutablePath: exe, baseURL: srv.URL}
+	u := NewUpdaterWithBaseURL("0.5.0", srv.URL)
+	u.HTTPClient = srv.Client()
+	u.ExecutablePath = exe
 	res := u.CheckAndUpdate(context.Background())
 	if res.Error != nil {
 		t.Fatalf("CheckAndUpdate: %v", res.Error)
@@ -297,7 +299,8 @@ func TestCheckAndUpdate_AbortsWhenChecksumsMissing(t *testing.T) {
 		})
 	}))
 	defer srv.Close()
-	u := &Updater{CurrentVersion: "0.5.0", HTTPClient: srv.Client(), baseURL: srv.URL}
+	u := NewUpdaterWithBaseURL("0.5.0", srv.URL)
+	u.HTTPClient = srv.Client()
 	if res := u.CheckAndUpdate(context.Background()); res.Error == nil {
 		t.Fatal("expected an error when checksums.txt is absent from the release")
 	}
@@ -308,7 +311,8 @@ func TestGetLatestRelease_HTTPError(t *testing.T) {
 		w.WriteHeader(http.StatusInternalServerError)
 	}))
 	defer srv.Close()
-	u := &Updater{CurrentVersion: "0.5.0", HTTPClient: srv.Client(), baseURL: srv.URL}
+	u := NewUpdaterWithBaseURL("0.5.0", srv.URL)
+	u.HTTPClient = srv.Client()
 	if _, err := u.GetLatestRelease(context.Background()); err == nil {
 		t.Error("expected an error on HTTP 500")
 	}
@@ -319,7 +323,8 @@ func TestGetLatestRelease_BadJSON(t *testing.T) {
 		_, _ = w.Write([]byte("this is not json"))
 	}))
 	defer srv.Close()
-	u := &Updater{CurrentVersion: "0.5.0", HTTPClient: srv.Client(), baseURL: srv.URL}
+	u := NewUpdaterWithBaseURL("0.5.0", srv.URL)
+	u.HTTPClient = srv.Client()
 	if _, err := u.GetLatestRelease(context.Background()); err == nil {
 		t.Error("expected a JSON decode error")
 	}
@@ -341,7 +346,8 @@ func TestCheckAndUpdate_NoCompatibleAsset(t *testing.T) {
 		})
 	}))
 	defer srv.Close()
-	u := &Updater{CurrentVersion: "0.5.0", HTTPClient: srv.Client(), baseURL: srv.URL}
+	u := NewUpdaterWithBaseURL("0.5.0", srv.URL)
+	u.HTTPClient = srv.Client()
 	if res := u.CheckAndUpdate(context.Background()); res.Error == nil {
 		t.Fatal("expected an error when no asset matches the platform")
 	}
@@ -361,7 +367,8 @@ func TestCheckAndUpdate_ChecksumMismatch(t *testing.T) {
 	mux.HandleFunc("/c", func(w http.ResponseWriter, _ *http.Request) { _, _ = w.Write([]byte("deadbeef  " + asset + "\n")) })
 	srv := httptest.NewServer(mux)
 	defer srv.Close()
-	u := &Updater{CurrentVersion: "0.5.0", HTTPClient: srv.Client(), baseURL: srv.URL}
+	u := NewUpdaterWithBaseURL("0.5.0", srv.URL)
+	u.HTTPClient = srv.Client()
 	if res := u.CheckAndUpdate(context.Background()); res.Error == nil {
 		t.Fatal("expected a checksum-mismatch error")
 	}
@@ -380,7 +387,8 @@ func TestCheckAndUpdate_DownloadArchiveError(t *testing.T) {
 	mux.HandleFunc("/c", func(w http.ResponseWriter, _ *http.Request) { _, _ = w.Write([]byte("abc  " + asset + "\n")) })
 	srv := httptest.NewServer(mux)
 	defer srv.Close()
-	u := &Updater{CurrentVersion: "0.5.0", HTTPClient: srv.Client(), baseURL: srv.URL}
+	u := NewUpdaterWithBaseURL("0.5.0", srv.URL)
+	u.HTTPClient = srv.Client()
 	if res := u.CheckAndUpdate(context.Background()); res.Error == nil {
 		t.Fatal("expected a download error when the archive 404s")
 	}
