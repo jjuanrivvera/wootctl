@@ -60,6 +60,13 @@ func runUpdateCmd(t *testing.T, args ...string) (string, error) {
 	var out bytes.Buffer
 	cmd.SetOut(&out)
 	cmd.SetErr(&out)
+	if args == nil {
+		// A variadic call with no arguments gives a nil slice, and cobra reads os.Args
+		// when its args are nil — which under `go test` means the test binary's own
+		// flags. On Windows that made `-test.coverprofile=coverage.out` parse as a
+		// subcommand called ".out".
+		args = []string{}
+	}
 	cmd.SetArgs(args)
 	err := cmd.ExecuteContext(t.Context())
 	return out.String(), err
