@@ -74,6 +74,7 @@ Examples:
 * [wootctl restore](wootctl_restore.md)	 - Reconcile a backup dir into the account (create/update/skip; --prune removes drift)
 * [wootctl sync](wootctl_sync.md)	 - Copy account config from one instance to another (the multi-instance payoff)
 * [wootctl teams](wootctl_teams.md)	 - Manage teams and their members
+* [wootctl update](wootctl_update.md)	 - Update wootctl to the latest release
 * [wootctl version](wootctl_version.md)	 - Print version, commit, and build date
 * [wootctl webhooks](wootctl_webhooks.md)	 - Manage account webhook subscriptions
 

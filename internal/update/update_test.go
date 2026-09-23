@@ -393,3 +393,29 @@ func TestCheckAndUpdate_DownloadArchiveError(t *testing.T) {
 		t.Fatal("expected a download error when the archive 404s")
 	}
 }
+
+// The install step renames the running binary aside before moving the new one in. If that
+// rename fails there is nothing to roll back to, so the error has to surface rather than
+// leave the user with a half-installed update.
+func TestApplyUpdate_BackupFailureIsReported(t *testing.T) {
+	dir := t.TempDir()
+	missing := filepath.Join(dir, "not-installed-here")
+
+	u := &Updater{CurrentVersion: "0.5.0", ExecutablePath: missing}
+	err := u.applyUpdate([]byte("NEW"))
+	if err == nil {
+		t.Fatal("expected an error when the current binary cannot be moved aside")
+	}
+	if !strings.Contains(err.Error(), "backup current binary") {
+		t.Errorf("error = %v, want it to name the backup step", err)
+	}
+
+	// The temp file it staged must not be left behind next to the target.
+	entries, readErr := os.ReadDir(dir)
+	if readErr != nil {
+		t.Fatal(readErr)
+	}
+	for _, e := range entries {
+		t.Errorf("leftover file after a failed update: %s", e.Name())
+	}
+}
