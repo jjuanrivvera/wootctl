@@ -16,6 +16,13 @@ func init() {
 	metaRegistrars = append(metaRegistrars, func(_ *deps) *cobra.Command { return newUpdateCmd() })
 }
 
+// newUpdater is the seam the command's own tests replace. The real one talks to GitHub, which
+// a test must not do — and must not be allowed to replace the test binary either — so a test
+// swaps in an updater pointed at an httptest server with an ExecutablePath it owns.
+var newUpdater = func(currentVersion string) *update.Updater {
+	return update.NewUpdater(currentVersion)
+}
+
 // newUpdateCmd builds `wootctl update` (self-update) + `update check`.
 func newUpdateCmd() *cobra.Command {
 	cmd := &cobra.Command{
@@ -28,7 +35,7 @@ against the release checksums, and replace the running binary in place.`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			ctx, cancel := context.WithTimeout(cmd.Context(), 60*time.Second)
 			defer cancel()
-			res := update.NewUpdater(version.Get().Version).CheckAndUpdate(ctx)
+			res := newUpdater(version.Get().Version).CheckAndUpdate(ctx)
 			if res.Error != nil {
 				return res.Error
 			}
@@ -50,7 +57,7 @@ against the release checksums, and replace the running binary in place.`,
 			ctx, cancel := context.WithTimeout(cmd.Context(), 30*time.Second)
 			defer cancel()
 			cur := version.Get().Version
-			rel, err := update.NewUpdater(cur).GetLatestRelease(ctx)
+			rel, err := newUpdater(cur).GetLatestRelease(ctx)
 			if err != nil {
 				return err
 			}
