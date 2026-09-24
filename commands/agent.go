@@ -31,7 +31,7 @@ func (a apiCmdInfo) AllPaths() []string {
 // localGroups are command subtrees that never talk to the Chatwoot API (setup/meta/local).
 // Everything else must carry an annotation or classification fails closed as destructive —
 // the "annotation gap" escape (§3b hardening #4).
-var localGroups = []string{"auth", "config", "alias", "init", "doctor", "completion", "version", "agent", "mcp", "help"}
+var localGroups = []string{"auth", "config", "alias", "init", "doctor", "completion", "version", "update", "agent", "mcp", "help"}
 
 // classifyTree walks a fresh command tree and buckets every API-backed leaf by its MCP
 // annotation. The `api` escape hatch is excluded here — it is gated separately by HTTP
