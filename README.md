@@ -15,6 +15,9 @@
 
 [Documentation](https://jjuanrivvera.github.io/wootctl/) · [Commands](https://jjuanrivvera.github.io/wootctl/commands/)
 
+
+![wootctl in action](assets/demo.gif)
+
 </div>
 
 ---
