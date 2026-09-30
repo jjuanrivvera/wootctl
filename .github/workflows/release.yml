@@ -10,4 +10,9 @@ on:
 jobs:
   release:
     uses: jjuanrivvera/.github/.github/workflows/go-release.yml@main
+    with:
+      # Este repo etiqueta desde develop, así que sin esto main no avanza nunca:
+      # su portada en GitHub y su badge se quedan en lo último que se empujó a
+      # main a mano, que aquí eran cuatro commits atrás.
+      promote-main: true
     secrets: inherit
