@@ -1,6 +1,6 @@
 module github.com/jjuanrivvera/wootctl
 
-go 1.26.10
+go 1.26.11
 
 require (
 	github.com/getkin/kin-openapi v0.139.0
